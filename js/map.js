@@ -88,8 +88,8 @@ gtiz_map.resetMapDelta = function() {
   let box = document.querySelector('#map-aggregation-toggle');
   let toggle = box.querySelector('.toggle');
   let label = box.querySelector('.label');
-  let cfg = gtiz_settings.cfg.find(el => el.card == 'map');
-  let item = cfg.menu.find(el => el.id == 'map-aggregation-toggle');
+  let cfg = gtiz_map.context_menu;
+  let item = cfg.find(el => el.id == 'map-aggregation-toggle');
   toggle.classList.add('toggled-first-option');
   toggle.classList.remove('toggled-second-option');
   let value = item.options[0].value;

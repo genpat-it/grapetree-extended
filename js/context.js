@@ -486,10 +486,13 @@ gtiz_context.metadata_div.addEventListener("contextmenu", (e) => {
 });
 
 gtiz_context.map_div.addEventListener("contextmenu", (e) => {
-  e.preventDefault();
-  let type = 'map';
-  let trigger = gtiz_context.map_div.querySelector('.card-context-menu-trigger');
-  gtiz_context.showMenu(type, trigger);
+  let cls = gtiz_context.map_div.getAttribute('class');
+  if (cls.includes('map-container-initialized')) {
+    e.preventDefault();
+    let type = 'map';
+    let trigger = gtiz_context.map_div.querySelector('.card-context-menu-trigger');
+    gtiz_context.showMenu(type, trigger);
+  }
 });
 
 window.addEventListener("resize", function() {
