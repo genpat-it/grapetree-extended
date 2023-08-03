@@ -1,0 +1,100 @@
+/* GENERAL */
+:root {
+  --text: #17324D;
+  --main: #0066CC;
+  --dark: #0059B3;
+  --darker: #004080;
+  --light: #408AD5;
+  --ultra-light: #dbe7ed;
+  --accent: #D97E00;
+  --accent-light: #FF9700;
+  --accent-dark: #BF7000;
+  --secondary: #CED1D9;
+  --secondary-dark: #919399;
+  --secondary-darker: #555659;
+  --secondary-light: #E6E9F2;
+  --secondary-ultra-light: #F2F5FF;
+  --white: #ffffff;
+  --red: #F83E5A;
+  --red-dark: #DE3750;
+  --font-family: 'Titillium', sans-serif;
+}
+
+/* FONTS */
+@font-face {
+  font-family: "Titillium";
+  src: url("../fonts/Titillium_Web/TitilliumWeb-Light.woff2") format("woff2"),
+       url("../fonts/Titillium_Web/TitilliumWeb-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Titillium";
+  src: url("../fonts/Titillium_Web/TitilliumWeb-Light-Italic.woff2") format("woff2"),
+       url("../fonts/Titillium_Web/TitilliumWeb-Light-Italic.woff") format("woff");
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Titillium";
+  src: url("../fonts/Titillium_Web/TitilliumWeb-Regular.woff2") format("woff2"),
+       url("../fonts/Titillium_Web/TitilliumWeb-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Titillium";
+  src: url("../fonts/Titillium_Web/TitilliumWeb-Regular-Italic.woff2") format("woff2"),
+       url("../fonts/Titillium_Web/TitilliumWeb-Regular-Italic.woff") format("woff");
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Titillium";
+  src: url("../fonts/Titillium_Web/TitilliumWeb-Bold.woff2") format("woff2"),
+       url("../fonts/Titillium_Web/TitilliumWeb-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Titillium";
+  src: url("../fonts/Titillium_Web/TitilliumWeb-Bold-Italic.woff2") format("woff2"),
+       url("../fonts/Titillium_Web/TitilliumWeb-Bold-Italic.woff") format("woff");
+  font-weight: 700;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Titillium";
+  src: url("../fonts/Titillium_Web/TitilliumWeb-SemiBold.woff2") format("woff2"),
+       url("../fonts/Titillium_Web/TitilliumWeb-SemiBold.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Titillium";
+  src: url("../fonts/Titillium_Web/TitilliumWeb-SemiBold-Italic.woff2") format("woff2"),
+       url("../fonts/Titillium_Web/TitilliumWeb-SemiBold-Italic.woff") format("woff");
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Roboto Mono";
+  src: url("../fonts/Roboto_Mono/RobotoMono-Regular.woff2") format("woff2"),
+       url("../fonts/Roboto_Mono/RobotoMono-Regular.woff") format("woff");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Roboto Mono";
+  src: url("../fonts/Roboto_Mono/RobotoMono-Bold.woff2") format("woff2"),
+       url("../fonts/Roboto_Mono/RobotoMono-Bold.woff") format("woff");
+  font-weight: 700;
+}

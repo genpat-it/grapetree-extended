@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+	<meta charset="utf-8">
+	<title>COHESIVE Information System - GrapeTree</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" href="img/cohesive-theme/favicon.ico">
+  <link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/skeleton.css">
+  <link rel="stylesheet" href="css/iconic.css">
+  <link rel="stylesheet" href="css/cohesive-vars.css">
+  <link rel="stylesheet" href="css/custompages-base.css">
+  <link rel="stylesheet" href="css/dashboard-grapetree-view.css">
+	<link rel="stylesheet" href="css/cohesive-header.css">
+  <link rel="stylesheet" href="css/cohesive-footer.css">
+
+  <!-- libraries -->
+  <!-- jquery-ui -->
+  <link rel="stylesheet" type="text/css" href="js/jquery-ui-1.11.4/jquery-ui.min.css">
+  <!-- metadata table: ag-grid -->
+  <link rel="stylesheet" href="js/ag-grid/ag-grid.css"/>
+  <link rel="stylesheet" href="js/ag-grid/ag-theme-alpine.css"/>
+  <link rel="stylesheet" href="js/ag-grid/ag-theme-genpat.css"/>
+  <!-- LeafletJS CSS -->
+  <link rel="stylesheet" href="css/leaflet.css" />
+  <link rel="stylesheet" href="css/leaflet-custom.css" />
+  <!-- Spectrum -->
+  <link rel="stylesheet" href="css/spectrum.min.css" type="text/css"/>
+</head>
+
+<body class="dashboard dashboard-grapetree">
+	<header class="header">
+    <div class="top-bar">
+      <div class="platform-heading">
+        <div class="platoform-logo">
+          <img src="img/cohesive-theme/platform-logo.svg" alt="Logo">
+        </div>
+        <div class="platform-title">
+          <h1>COHESIVE Information System, GrapeTree</h1>
+        </div>
+      </div>
+      <div class="toolbar">
+        <div class="tool tool-lang">
+          <div class="tool-label">
+            It
+          </div>
+          <div class="tool-trigger">
+            <i class="iconic iconic-globe"></i>
+          </div>
+        </div><!-- language trigger -->
+        <div class="tool">
+          <div class="tool-trigger tool-trigger-aside" onclick="gtiz_layout.showFooter()">
+            <i class="iconic iconic-information toogle-trigger-img toogle-trigger-img-help"></i>
+            <i class="iconic iconic-close-circle toogle-trigger-img toogle-trigger-img-close hidden"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <main>
+    <section class="quick-actions">
+      <div class="tools-wrapper">
+        <div class="tools tools-left"></div>
+        <div class="tools tools-right"></div>
+      </div>
+    </section>
+
+    <section class="main dashboard-viewport dashboard-grapetree-viewport">
+      <div class="settings">
+        <div class="container container-full">
+          <div class="row">
+            <div class="six columns">
+
+              <div class="card card-expandable card-settings card-tree-layout" data-type="tree-layout">
+                <div class="card-expand-trigger">
+                  <i class="iconic iconic-plus-circle"></i>
+                  <i class="iconic iconic-minus-circle"></i>
+                </div>
+                <div class="card-context-tools">
+                  <div class="card-info-trigger">
+                    <i class="iconic iconic-help-circle"></i>
+                  </div>
+                </div>
+                <h3 class="card-title"><span data-i18n-key="tree_layout">Tree layout</span></h3>
+                <div class="card-form"></div>
+                <div class="card-message"></div>
+              </div><!-- card -->
+  
+              <div class="card card-expandable card-settings card-node-style" data-type="node-style">
+                <div class="card-expand-trigger">
+                  <i class="iconic iconic-plus-circle"></i>
+                  <i class="iconic iconic-minus-circle"></i>
+                </div>
+                <div class="card-context-tools">
+                  <div class="card-info-trigger">
+                    <i class="iconic iconic-help-circle"></i>
+                  </div>
+                </div>
+                <h3 class="card-title"><span data-i18n-key="node_style">Node style</span></h3>
+                <div class="card-form"></div>
+                <div class="card-message"></div>
+              </div><!-- card -->
+  
+              <div class="card card-expandable card-settings card-node-size" data-type="node-size">
+                <div class="card-expand-trigger">
+                  <i class="iconic iconic-plus-circle"></i>
+                  <i class="iconic iconic-minus-circle"></i>
+                </div>
+                <div class="card-context-tools">
+                  <div class="card-info-trigger">
+                    <i class="iconic iconic-help-circle"></i>
+                  </div>
+                </div>
+                <h3 class="card-title"><span data-i18n-key="node_size">Node size</span></h3>
+                <div class="card-form"></div>
+                <div class="card-message"></div>
+              </div><!-- card -->
+  
+            </div><!-- columns -->
+  
+            <div class="six columns">
+  
+              <div class="card card-expandable card-settings card-branch-style" data-type="branch-style">
+                <div class="card-expand-trigger">
+                  <i class="iconic iconic-plus-circle"></i>
+                  <i class="iconic iconic-minus-circle"></i>
+                </div>
+                <div class="card-context-tools">
+                  <div class="card-info-trigger">
+                    <i class="iconic iconic-help-circle"></i>
+                  </div>
+                </div>
+                <h3 class="card-title"><span data-i18n-key="branch_style">Branch style</span></h3>
+                <div class="card-form"></div>
+                <div class="card-message"></div>
+              </div><!-- card -->
+  
+              <div class="card card-expandable card-settings card-branch-cutoffs" data-type="branch-cutoffs">
+                <div class="card-expand-trigger">
+                  <i class="iconic iconic-plus-circle"></i>
+                  <i class="iconic iconic-minus-circle"></i>
+                </div>
+                <div class="card-context-tools">
+                  <div class="card-info-trigger">
+                    <i class="iconic iconic-help-circle"></i>
+                  </div>
+                </div>
+                <h3 class="card-title"><span data-i18n-key="branch_cutoffs">Branch cutoffs</span></h3>
+                <div class="card-form"></div>
+                <div class="card-message"></div>
+              </div><!-- card -->
+
+              <div class="card card-expandable card-settings card-rendering" data-type="rendering">
+                <div class="card-expand-trigger">
+                  <i class="iconic iconic-plus-circle"></i>
+                  <i class="iconic iconic-minus-circle"></i>
+                </div>
+                <div class="card-context-tools">
+                  <div class="card-info-trigger">
+                    <i class="iconic iconic-help-circle"></i>
+                  </div>
+                </div>
+                <h3 class="card-title"><span data-i18n-key="rendering">Rendering</span></h3>
+                <div class="card-form"></div>
+                <div class="card-message"></div>
+              </div><!-- card -->
+
+              <!-- <div class="card card-expandable card-settings card-map" data-type="map">
+                <div class="card-expand-trigger">
+                  <i class="iconic iconic-plus-circle"></i>
+                  <i class="iconic iconic-minus-circle"></i>
+                </div>
+                <div class="card-context-tools">
+                  <div class="card-info-trigger">
+                    <i class="iconic iconic-help-circle"></i>
+                  </div>
+                </div>
+                <h3 class="card-title"><span data-i18n-key="map">Map</span></h3>
+                <div class="card-form"></div>
+                <div class="card-message"></div>
+              </div> --> <!-- card -->
+
+              <!-- <div class="card card-expandable card-settings card-input-output">
+                <div class="card-expand-trigger">
+                  <i class="iconic iconic-plus-circle"></i>
+                  <i class="iconic iconic-minus-circle"></i>
+                </div>
+                <div class="card-context-tools">
+                  <div class="card-info-trigger">
+                    <i class="iconic iconic-help-circle"></i>
+                  </div>
+                </div>
+                <h3 class="card-title"><span data-i18n-key="input_output">Input/Output</span></h3>
+                <div class="card-form"></div>
+                <div class="card-message"></div>
+              </div> --><!-- card -->
+
+            </div><!-- columns -->
+          </div>
+        </div>
+      </div>
+      <div class="tree">
+        <div class="tree-container card-tree">
+          <div class="card-context-tools">
+            <div class="card-context-menu-trigger" data-menu-type="tree">
+              <i class="iconic iconic-dots-vertical"></i>
+            </div>
+          </div>
+          <div class="tree-title" id="headertag">ms_tree.json</div>
+          <div id="graph-div" class="drop-area"></div>
+          <div id="draggable-area">
+            <div class="drag-trigger" id="rotation-icon">
+              <i class="iconic iconic-refresh"></i>
+            </div>
+          </div>
+          <div class="drop-box">
+            <div class="drop-contents drop-area">
+              <div class="drop-message">
+                <div class="icon">
+                  <i class="iconic iconic-file-plus"></i>
+                </div>
+                <h4>
+                  <span data-i18n-key="drop_message">Please drag here a valid .json file or load it from your file system to start with GrapeTree.</span>
+                </h4>
+                <p>
+                  <span data-i18n-key="drop_info">You can also drag or load a .nwk file followed by a .tsv file containing metadata and optionally a .geojson file containing geo-saptial information.</span>
+                </p>
+              </div>
+              <div class="drop-button">
+                <button class="secondary load-grapetree"><span data-i18n-key="load_grapetree">Load GrapeTree</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="map">
+        <div id="map-div" class="map-container card-map">
+          <div class="card-context-tools">
+            <div class="card-context-menu-trigger" data-menu-type="map">
+              <i class="iconic iconic-dots-vertical"></i>
+            </div>
+          </div>
+          <div class="map-empy-message">
+            <i class="iconic iconic-warning-triangle"></i> <span data-i18n-key="no_geo_info_message"></span>
+          </div>
+        </div>
+      </div>
+      <div class="metadata">
+        <div class="metadata-container card card-metadata">
+          <div class="card-context-tools">
+            <div class="card-context-menu-trigger" data-menu-type="metadata">
+              <i class="iconic iconic-dots-vertical"></i>
+            </div>
+          </div>
+          <div class="card-form"></div>
+          <div id="metadata-grid" class="ag-theme-alpine ag-theme-genpat"></div>
+        </div>
+      </div>
+      <div class="legend">
+        <div class="card card-legend card-legend-list expanded">
+          <div class="card-context-tools">
+            <div class="card-context-menu-trigger" data-menu-type="legend">
+              <i class="iconic iconic-dots-vertical"></i>
+            </div>
+          </div>
+          <h3 class="card-title" data-i18n-key="legend">Legend</h3>
+          <div class="card-form"></div>
+          <div class="card-message">No category to display</div>
+        </div>
+        <div class="card card-player expanded">
+          <div class="card-form card-form-player">
+            <div class="slider-box slider-box-player">
+              <a class="play-trigger play">
+                <i class="iconic iconic-play"></i>
+              </a>
+              <div class="slider">
+                <div class="slider-bar"></div>
+                <div class="slider-handler"></div>
+              </div>
+              <div class="speed-trigger">
+                <select></select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section class="modal">
+    <div class="modal-contents">
+      <div class="modal-close"><i class="iconic iconic-close-circle"></i></div>
+      <div class="modal-header"></div>
+      <div class="modal-body"></div>
+      <div class="modal-feedback"></div>
+    </div>
+  </section>
+
+	<footer>
+    <div class="footer-contents">
+      <div class="footer-close" onclick="gtiz_layout.showFooter()"><i class="iconic iconic-close-circle"></i></div>
+      <div class="logo genpat-logo">
+        <img src="img/cohesive-theme/eu-emblem.svg" alt="EU Emblem">
+      </div>
+      <div class="useful useful-disclaimer">
+        <p>
+          This project is part of the European Joint Programme One Health EJP. This project has received funding from the European Union’s Horizon 2020 research and innovation programme under Grant Agreement No 773830.
+        </p>
+      </div>
+      <div class="useful useful-links">
+        <h6 data-i18n-key="useful_links">Useful links</h6>
+        <ul>
+          <li><a href="https://onehealthejp.eu/">One Heakth EJP</a></li>
+          <li><a href="https://www.izs.it/IZS/Eccellenza/Centri_nazionali/CRN_-_Sequenze_Genomiche" target="_blank"><span data-i18n-key="crn_genome_sequencing">CRN Genome Sequencing</span></a></li>
+          <li><a href="https://github.com/achtman-lab/GrapeTree" target="_blank">GrapeTree Github</a></li>
+          <li><a href="https://www.izs.it/IZS/" target="_blank">IZSAM "G. Caporale"</a></li>
+        </ul>
+        <div class="useful useful-help">
+          <h6 data-i18n-key="support">Support</h6>
+          <ul>
+            <li><a href="https://cohesive.izs.it/wiki/user/Dashboards/GrapeTree/GrapeTree.html" target="_blank">Wiki</a></li>
+            <li><a href="mailto:bionformatica@izs.it" target="_blank">bionformatica@izs.it</a></li>
+            <li><a href="tel:+3908613321" target="_blank">+39 0861 3321</a></li>
+          </ul>
+        </div>
+        <div class="info">
+          <img src="img/cohesive-theme/izsam-logo.svg">
+        </div>
+        <div class="info">
+          <p><span data-i18n-key="last_updated_on">Last updated on</span> __LAST_UPDATE__</p>
+          <p class="copyright">&copy; 2021 IZSAM "G. Caporale"</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- libraries -->
+  <script src="js/main/jquery-1.9.1.min.js"></script>
+  <script src="js/jquery-ui-1.11.4/jquery-ui.min.js"></script>
+  <script charset="utf-8" src="js/main/d3.min.js"></script>
+  <script src="js/ag-grid/ag-grid-community.min.noStyle.js"></script>
+  <script src="js/spectrum/spectrum.min.js"></script>
+  <script src="js/leaflet/leaflet.js"></script>
+  <!-- tree enterobase -->
+  <script charset="utf-8" src="js/tree/base_tree.js"></script>
+  <script charset="utf-8" src="js/tree/d3_m_tree.js"></script>
+  <!-- custom -->
+  <script src="js/modal.js"></script>
+  <script src="js/slider.js"></script>
+  <script src="js/languages.js"></script>
+  <script src="js/locales.js"></script>
+  <script src="js/file-handler.js"></script>
+  <script src="js/tree.js"></script>
+  <script src="js/tree-extended.js"></script>
+  <script src="js/metadata.js"></script>
+  <script src="js/context.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/legend.js"></script>
+  <script src="js/video.js"></script>
+  <script src="js/help.js"></script>
+  <script src="js/map.js"></script>
+</body>
+</html>

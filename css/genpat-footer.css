@@ -1,0 +1,164 @@
+/* FOOTER */
+
+footer::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  backdrop-filter: blur(0.2rem);
+  opacity: 0;
+  z-index: -1;
+  visibility: hidden;
+  -webkit-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+}
+
+footer.show::before {
+  opacity: 1;
+  z-index: 1000;
+  visibility: visible;
+}
+
+footer::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--secondary-ultra-light);
+  opacity: 0;
+  z-index: -1;
+  visibility: hidden;
+  -webkit-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+}
+
+footer.show::after {
+  opacity: 0.8;
+  z-index: 1001;
+  visibility: visible;
+}
+
+footer {
+  position: fixed;
+  z-index: -1;
+  visibility: hidden;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+footer.show {
+  z-index: 9998;
+  visibility: visible;
+}
+
+.footer-contents {
+  position: absolute;
+  z-index: 9999;
+  padding: 4.2rem 3.4rem;
+  padding-top: 4.9rem;
+  border-radius: 2.4rem;
+  background-color: var(--dark);
+  bottom: 1rem;
+  right: 1rem;
+  max-height: calc(84vh - 4.8rem);
+  overflow-y: auto;
+  opacity: 0;
+  -webkit-transform: translateY(calc(100% + 8.4rem));
+  transform: translateY(calc(100% + 8.4rem));
+  -webkit-box-shadow: 0px 0px 34px 0px rgba(0,0,0,0.08);
+  box-shadow: 0px 0px 34px 0px rgba(0,0,0,0.08);
+  -webkit-transition: all 0s ease 0s;
+  transition: all 0s ease 0s;
+}
+
+footer.show .footer-contents {
+  opacity: 1;
+  -webkit-transform: translateY(0);
+  transform: translateY(0);
+  -webkit-transition: opacity 0.3s ease 0.3s, transform 0.3s ease 0.3s;
+  transition: opacity 0.3s ease 0.3s, transform 0.3s ease 0.3s;
+}
+
+.footer-close {
+  /*PLEASE NOTE: modal close container should include the iconic <i> tag in html*/
+  position: absolute;
+  right: 1.3rem;
+  top: 1.3rem;
+  cursor: pointer;
+  z-index: 1000;
+  color: var(--white);
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+footer .toolbar {
+  position: absolute;
+  top: 1.3rem;
+  right: 1.3rem;
+}
+
+footer .logo {
+  margin-bottom: 3.4rem;
+}
+
+footer .logo img {
+  max-width: 12.3rem;
+}
+
+footer .useful {
+  margin-bottom: 2.1rem;
+}
+
+footer .useful:last-child {
+  margin-bottom: 0;
+}
+
+footer .useful h6 {
+  color: var(--white);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 1.6rem;
+}
+
+footer .useful p {
+  color: var(--white);
+  font-size: 1.5rem;
+}
+
+footer .useful ul {
+  list-style: none;
+  font-size: 1.5rem;
+}
+
+footer .useful ul li {
+  margin-bottom: 0.5rem;
+  display: inline-block;
+  margin-right: 0.8rem;
+}
+
+footer .useful ul li a {
+  color: var(--white);
+  opacity: 0.9;
+}
+
+footer .info {
+  margin-top: 3.4rem;
+}
+
+footer .info p {
+  color: var(--white);
+  opacity: 0.9;
+  margin-bottom: 0;
+  font-size: 1.3rem;
+}
+
+footer .info p.copyright {
+  opacity: 0.6;
+  margin-top: 0.5rem;
+}

@@ -1,0 +1,194 @@
+/* HEADER */
+
+header {
+  /*
+  padding: 0.8rem 1.3rem;
+  background-color: var(--dark);
+  */
+  /* consistency with cmdbuild header */
+  padding: 0.75rem 1.5rem;
+  background-color: var(--main);
+}
+
+header .top-bar {
+  display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;      /* TWEENER - IE 10 */
+  display: -webkit-flex;     /* NEW - Chrome */
+  display: flex;
+  -webkit-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  -webkit-align-content: center;
+  -ms-align-content: center;
+  align-content: center;
+  -webkit-justify-content: space-between;
+  -ms-justify-content: space-between;
+  justify-content: space-between;
+}
+
+header .platform-heading {
+  display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;      /* TWEENER - IE 10 */
+  display: -webkit-flex;     /* NEW - Chrome */
+  display: flex;
+  -webkit-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  -webkit-align-content: center;
+  -ms-align-content: center;
+  align-content: center;
+  -webkit-justify-content: flex-start;
+  -ms-justify-content: flex-start;
+  justify-content: flex-start;
+}
+
+header .platoform-logo {
+  /* 
+  width: 2.4rem; 
+  margin-right: 0.8rem;
+  */
+  /* consistency with cmdbuild header */
+  margin-right: 1.3rem;
+  line-height: 0;
+}
+
+header .platoform-logo img {
+  height: 3.3rem;
+  width: auto;
+}
+
+header h1 {
+  color: var(--white);
+  font-size: 1.5rem;
+  font-weight: 300;
+  letter-spacing: .05rem;
+  margin-bottom: 0;
+  line-height: 1.2;
+}
+
+header h2 {
+  color: var(--white);
+  opacity: 0.7;
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: .05rem;
+  margin-bottom: 0;
+  line-height: 1;
+}
+
+@media (min-width: 550px) {
+  header h2 {
+    font-size: 1.2rem;
+  }
+}
+
+@media (min-width: 750px) {
+  header h2 {
+    font-size: 1.4rem;
+  }
+}
+
+header .toolbar {
+  display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;      /* TWEENER - IE 10 */
+  display: -webkit-flex;     /* NEW - Chrome */
+  display: flex;
+  -webkit-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  -webkit-align-content: center;
+  -ms-align-content: center;
+  align-content: center;
+  -webkit-justify-content: flex-end;
+  -ms-justify-content: flex-end;
+  justify-content: flex-end;
+}
+
+header .tool {
+  display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;      /* TWEENER - IE 10 */
+  display: -webkit-flex;     /* NEW - Chrome */
+  display: flex;
+  -webkit-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  -webkit-align-content: center;
+  -ms-align-content: center;
+  align-content: center;
+  -webkit-justify-content: flex-end;
+  -ms-justify-content: flex-end;
+  justify-content: flex-end;
+  margin-right: 1.3rem;
+}
+
+header .tool:last-child {
+  margin-right: 0;
+}
+
+header .tool-label {
+  color: var(--white);
+  margin-right: 0.5rem;
+  font-size: 1.4rem;
+  line-height: 1.1;
+  text-align: right;
+}
+
+@media (min-width: 1000px) {
+  header .tool-label {
+    margin-right: 0.8rem;
+    font-size: 1.5rem;
+  }
+}
+
+header .tool-trigger {
+  cursor: pointer;
+  width: 2.4rem;
+  height: 2.4rem;
+  line-height: 2.45rem;
+  text-align: center;
+  border-radius: 50%;
+  /*background-color: rgba(255,255,255,0.2);*/
+  position: relative;
+  z-index: 2;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+header .tool-trigger::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  border-radius: 50%;
+  width: 2.4rem;
+  height: 2.4rem;
+  z-index: 1;
+  background-color: rgba(255,255,255,0.2);
+  -webkit-transform: scale(0);
+  transform: scale(0);
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+header .tool-trigger:hover::before {
+  -webkit-transform: scale(1.4);
+  transform: scale(1.4);
+}
+
+header .tool-trigger i {
+  color: var(--white);
+  display: inline-block;
+  -webkit-transform: scale(0.95);
+  transform: scale(0.95);
+  -webkit-transition: all 0.3s ease 0.3s;
+  transition: all 0.3s ease 0.3s;
+}
+
+header .tool-trigger i.hidden {
+  display: none;
+}
