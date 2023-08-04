@@ -14,17 +14,17 @@ You can download the project and easly running in locally. We provide also a rea
 
 Currently, the available languages are English and Italian. However, the application can be easily extended with new translations. If you would like to contribute, you can use the `en.js` or `it.js` file as a template from the `i18n` folder in this repository and translate the values. For any information or support regarding this, do not hesitate to contact bionformatica@izs.it.
 
-### Instruction to run it locally
+## Instruction to run it locally
 
 You can run the project locally but you need to run a web server, **node packages http-server** or **live-server** works pretty fine.
 
-#### Prerequisites
+### Prerequisites
 
 **Node js**
 
 Download the latest stable release of NodeJS from https://nodejs.org and install it using all the default options.
 
-#### Install and use live-server
+### Install and use live-server
 
 Now you will be able to install `live-server` globally on your machine using the node package manager `npm` command line tool, this will allow you to run a web server from anywhere on your computer.
 
@@ -36,7 +36,7 @@ To start a web server, in terminal open the directory containing your static web
 
 `live-server`
 
-#### Run GrapeTree locally
+### Run GrapeTree locally
 
 Download the .zip of the code from this repository, then unzip on a directory `DIR_GRAPETREE` (for example: `/tmp/grapetree-extended`).
 
@@ -54,7 +54,7 @@ In the project you will find a `datasets` folder with some example data to load,
 
 `http://localhost:8080?tree=/datasets/test/tree.nwk&metadata=/datasets/test/metadata.tsv&geo=/datasets/test/points.geojson`
 
-#### Load geoJSON or cooridates data
+### Load geoJSON or cooridates data
 
 The dashboard is able to recognize `.geojson` file passed as `geo` parameter by query string:
 
@@ -74,7 +74,7 @@ Using our data example:
 
 `&metadata=metadata.tsv`
 
-#### Load files
+### Load files
 
 The can also directly upload files by dragging them over the tree, over the initial droppable area or using load buttons provided in the UI. In this case you don't neet to user parameters in the url. You can drag or load a `.nwk` file followed by a `.tsv` file containing metadata and optionally a `.geojson` file containing geo-saptial information.
 
@@ -82,7 +82,7 @@ The can also directly upload files by dragging them over the tree, over the init
 >
 > .nwk file should be loaded before loading metadata or geoJson files.
 
-#### Save or load a compatible JSON file
+### Save or load a compatible JSON file
 
 Dashboard allows you to download a complete JSON file including metadata and configurations. Generated JSON file can be loaded with the same drag or load functionalities seen previously, this is very useful if you want to save your work or share it.
 
