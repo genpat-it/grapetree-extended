@@ -185,9 +185,9 @@ gtiz_map.setGeoJSON = function (geoJ) {
     function isString(obj) {
       return typeof obj === "string";
     }
-    if (isString(geoJ)) {
-      gtiz_map.geojson = JSON.parse(geoJ);
-      window.global_geoJ = JSON.parse(geoJ);
+    if (!isString(geoJ)) {
+      gtiz_map.geojson = JSON.stringify(geoJ);
+      window.global_geoJ = JSON.stringify(geoJ);
     } else {
       gtiz_map.geojson = geoJ;
       window.global_geoJ = geoJ;
@@ -889,7 +889,8 @@ gtiz_map.loadGeoJson = (delta, type, filter) => {
     }
   } else {
     if (gtiz_map.geojson != '') {
-      gtiz_map.reBuildGeoJSON(gtiz_map.geojson, delta, type, filter);
+      let data = JSON.parse(gtiz_map.geojson);
+      gtiz_map.reBuildGeoJSON(data, delta, type, filter);
     }
   }
 } // loadGeoJson
