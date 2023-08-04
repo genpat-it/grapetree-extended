@@ -20,15 +20,11 @@ You can run the project locally but you need to run a web server, **node package
 
 ### Prerequisites
 
-**Node js**
-
-Download the latest stable release of NodeJS from https://nodejs.org and install it using all the default options.
+* **Node js**. Download the latest stable release of NodeJS from [https://nodejs.org](https://nodejs.org) and install it using all the default options.
 
 ### Install and use live-server
 
 Now you will be able to install `live-server` globally on your machine using the node package manager `npm` command line tool, this will allow you to run a web server from anywhere on your computer.
-
-**live-server**
 
 `npm install live-server -g`
 
