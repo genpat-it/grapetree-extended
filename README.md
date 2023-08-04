@@ -4,11 +4,15 @@
 
 The project is based on [GrapeTree](https://github.com/achtman-lab/GrapeTree), a fully interactive, tree visualization program within EnteroBase, which supports facile manipulations of both tree layout and metadata. Please see more info [here](https://enterobase.readthedocs.io/en/latest/grapetree/grapetree-about.html).
 
-The idea was to extend the original project in order to conducts spatio-temporal analyses with an integrated geographic information system (GIS) as well as a data visualization system across time. The web application allows users to upload  geographic coordinates and temporal data related to each sample and allows to display them reflecting the selection in the tree on the map and vice versa, and reproducing a timelapse visualization both in the map and in the tree.
+The idea was to extend the original project in order to conducts spatio-temporal analyses with an integrated geographic information system (GIS) as well as a data visualization system across time. The web application allows users to upload geographic coordinates and temporal data related to each sample and allows to display them reflecting the selection in the tree on the map and vice versa, and reproducing a timelapse visualization both in the map and in the tree.
 
 ## Use GrapeTree extended version
 
-You can download the project and easly running in locally. We provide also a ready to use version here [https://cohesive.izs.it/grapetree/extended](https://cohesive.izs.it/grapetree/extended), you can load also sensitive data, your dataset is visualised client-side in the browser -- no data is transmitted, and no tracking cookies are used. The only data downloaded from the internet is the visualisation (JavaScript) code, fonts and any map tiles needed.
+You can download the project and easly running in locally. We provide also a ready to use version here [https://cohesive.izs.it/grapetree/extended](https://cohesive.izs.it/grapetree/extended), you can load also sensitive data, your dataset is visualised client-side in the browser. No data is transmitted, and no tracking cookies are used. The only data downloaded from the internet are the visualisation (JavaScript) code, fonts and map tiles.
+
+## Available Languages and translations
+
+Currently, the available languages are English and Italian. However, the application can be easily extended with new translations. If you would like to contribute, you can use the `en.js` or `it.js` file as a template from the `i18n` folder in this repository and translate the values. For any information or support regarding this, do not hesitate to contact bionformatica@izs.it.
 
 ### Instruction to run it locally
 
@@ -82,26 +86,26 @@ The can also directly upload files by dragging them over the tree, over the init
 
 Dashboard allows you to download a complete JSON file including metadata and configurations. Generated JSON file can be loaded with the same drag or load functionalities seen previously, this is very useful if you want to save your work or share it.
 
-# Documentation
+## Documentation
 
 * [https://cohesive.izs.it/wiki/user/Dashboards/GrapeTree/GrapeTree.html](https://cohesive.izs.it/wiki/user/Dashboards/GrapeTree/GrapeTree.html)
 * [https://enterobase.readthedocs.io/en/latest/grapetree/grapetree-about.html](https://enterobase.readthedocs.io/en/latest/grapetree/grapetree-about.html)
 
-# Credits
+## Credits
 
-## Tree
+### Tree
 
 * [https://github.com/achtman-lab/GrapeTree](https://github.com/achtman-lab/GrapeTree)
 
-## Map
+### Map
 
 * [https://www.openstreetmap.org/](https://www.openstreetmap.org/)
 * [https://leafletjs.com/](https://leafletjs.com/) 
 
-## Metadata table
+### Metadata table
 
 * [https://github.com/ag-grid/ag-grid](https://github.com/ag-grid/ag-grid)
 
-## Legend
+### Legend
 
 * [https://github.com/bgrins/spectrum](https://github.com/bgrins/spectrum)
