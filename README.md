@@ -8,7 +8,7 @@ The idea was to extend the original project in order to conducts spatio-temporal
 
 ## Use GrapeTree extended version
 
-You can download the project and easly running in locally. We provide also a ready to use version here [https://cohesive.izs.it/grapetree/extended](https://cohesive.izs.it/grapetree/extended), you can load also sensitive data, your dataset is visualised client-side in the browser. No data is transmitted, and no tracking cookies are used. The only data downloaded from the internet are the visualisation (JavaScript) code, fonts and map tiles.
+You can download the project and easly running it locally. We provide also a ready to use version here [https://cohesive.izs.it/grapetree/extended](https://cohesive.izs.it/grapetree/extended), you can load also sensitive data, your dataset is visualised client-side in the browser. No data is transmitted, and no tracking cookies are used. The only data downloaded from the internet are the visualisation (JavaScript) code, fonts and map tiles.
 
 ## Available Languages and translations
 
