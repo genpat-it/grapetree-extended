@@ -8,15 +8,16 @@ The idea was to extend the original project in order to conducts spatio-temporal
 
 ## Use GrapeTree extended version
 
-You can download the project and easly running it locally. We provide also a ready to use version here [https://cohesive.izs.it/grapetree/extended](https://cohesive.izs.it/grapetree/extended), you can load also sensitive data, your dataset is visualised client-side in the browser. No data is transmitted, and no tracking cookies are used. The only data downloaded from the internet are the visualisation (JavaScript) code, fonts and map tiles.
+You can download the project and easly running it locally, but we provide also a ready to use version freely available following links below:
 
-## Available Languages and translations
+* [https://cohesive.izs.it/grapetree/extended](https://cohesive.izs.it/grapetree/extended)
+* [https://genpat.izs.it/grapetree/extended](https://genpat.izs.it/grapetree/extended)
 
-Currently, the available languages are English and Italian. However, the application can be easily extended with new translations. If you would like to contribute, you can use the `en.js` or `it.js` file as a template from the `i18n` folder in this repository and translate the values. For any information or support regarding this, do not hesitate to contact bionformatica@izs.it.
+Please note, you can load sensitive data, your dataset is visualised client-side in the browser. No data is transmitted, and no tracking cookies are used. The only data downloaded from the internet are the visualisation (JavaScript) code, fonts and map tiles.
 
 ## Instruction to run it locally
 
-You can run the project locally but you need to run a web server, **node packages http-server** or **live-server** works pretty fine.
+To run the project locally you need to set a web server, **node packages http-server** or **live-server** works pretty fine.
 
 ### Prerequisites
 
@@ -81,6 +82,10 @@ The can also directly upload files by dragging them over the tree, over the init
 ### Save or load a compatible JSON file
 
 Dashboard allows you to download a complete JSON file including metadata and configurations. Generated JSON file can be loaded with the same drag or load functionalities seen previously, this is very useful if you want to save your work or share it.
+
+## Available Languages and translations
+
+Currently, the available languages are English and Italian. However, the application can be easily extended with new translations. If you would like to contribute, you can use the `en.js` or `it.js` file as a template from the `i18n` folder in this repository and translate the values. For any information or support regarding this, do not hesitate to contact bionformatica@izs.it.
 
 ## Documentation
 
