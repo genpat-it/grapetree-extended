@@ -88,7 +88,7 @@ Currently, the available languages are English and Italian. However, the applica
 
 ## Documentation
 
-* [https://cohesive.izs.it/wiki/user/Dashboards/GrapeTree/GrapeTree.html](https://cohesive.izs.it/wiki/user/Dashboards/GrapeTree/GrapeTree.html)
+* [https://cohesive.izs.it/wiki/user/Dashboards/GrapeTree/GrapeTree_extended.html](https://cohesive.izs.it/wiki/user/Dashboards/GrapeTree/GrapeTree_extended.html)
 * [https://enterobase.readthedocs.io/en/latest/grapetree/grapetree-about.html](https://enterobase.readthedocs.io/en/latest/grapetree/grapetree-about.html)
 
 ## Credits

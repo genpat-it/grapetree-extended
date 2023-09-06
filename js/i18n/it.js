@@ -22,7 +22,7 @@ gtiz_languages.it = {
   "download": "Download",
   "download_table": "Esporta tabella",
   "download_svg": "Download Svg",
-  "drop_info": "Puoi anche trascinare o caricare un file .nwk seguito da un file .tsv per i metadata da associare al tree. Opzionalmente puoi trascinare o caricare un file .geojson contenente informazioni geospaziali. Puoi trovare una guida completa sul nostro <a href=\"https://genpat.izs.it/genpat_wiki/\" target=\"_blank\">wiki</a>.",
+  "drop_info": "Puoi anche trascinare o caricare un file .nwk seguito da un file .tsv per i metadata da associare al tree. Opzionalmente puoi trascinare o caricare un file .geojson contenente informazioni geospaziali. Puoi trovare una guida completa sul nostro <a href=\"https://cohesive.izs.it/wiki/user/Dashboards/GrapeTree/GrapeTree_extended.html\" target=\"_blank\">wiki</a>.",
   "drop_message": "Trascina in quest'area un file .json valido oppure caricalo dal tuo computer per iniziare con GrapeTree.",
   "dropped_files_alert": "Puoi trascinare un solo file per volta: un file <strong>.json</strong> completo o in alternativa un file <strong>.nwk</strong> seguito da un file <strong>.tsv</strong> per i metadata, infine eventualmente un file <strong>.geojson</strong> per dati geospaziali.",
   "dynamic" : "Dinamico",
@@ -67,7 +67,7 @@ gtiz_languages.it = {
     "map": {
       "help": '<p>Tramite le opzioni presenti in questa sezione potrai controllare l\'aspetto della mappa.</p><ul><li><strong>Aggrega per coordinate/per metadata:</strong> il toggle permette di aggregare i punti sulla mappa in base alla vicinanza geografica delle coordinate fornite o in base ai valori dei metadata caricati. Nel primo caso è possibile definire un valore numerico di <strong>delta</strong> che determina il grado di aggregazione.</li><li><strong>Raggio minimo/massimi marker:</strong> tramite questi due campi è possibile intervenire sulla dimensione dei punti sulla mappa definendo un raggio minimo ed un raggio massimo. La dimensione iniziale è relativa alla quantità di nodi presenti alle stesse cooridinate geografiche.</li><li><strong>Modalità diagramma/Modalità heatmap:</strong> questo toggle permette di cambiare la modalità di visualizzazione dei punti sulla mappa. Con la prima opzione (selezionata di default) i punti saranno visualizzati con dei grafici a torta in base alle categorie dei nodi del tree, con la seconda invece ai nodi viene applicata una sfocatura.</li></ul>'
     },
-    "feedback": '<p>Puoi trovare la documentazione completa sul nostro <a href="https://cohesive.izs.it/wiki/user/Dashboards/GrapeTree/GrapeTree.html" target="_blank">wiki</a>. Puoi anche consultare la documentazione ufficiale di <a href="https://enterobase.readthedocs.io/en/latest/grapetree/grapetree-about.html" target="_blank">EnteroBase</a>.</p>'
+    "feedback": '<p>Puoi trovare la documentazione completa sul nostro <a href="https://cohesive.izs.it/wiki/user/Dashboards/GrapeTree/GrapeTree_extended.html" target="_blank">wiki</a>. Puoi anche consultare la documentazione ufficiale di <a href="https://enterobase.readthedocs.io/en/latest/grapetree/grapetree-about.html" target="_blank">EnteroBase</a>.</p>'
   },
   "hide": "Nascondi",
   "hide_labels": "Nascondi etichette",
@@ -112,10 +112,10 @@ gtiz_languages.it = {
   "oops": "Ops!",
   "original_tree": "Tree iniziale",
   "pie_chart_mode": "Modalità diagramma",
-  "qualitative_selection": "Selezione qualitativa",
   "quick_gradient": "Gradiente veloce",
   "radius_size": "Dimensione raggio (%)",
   "real_branch_length" : "Lunghezza branch reale",
+  "related_nodes_selection" : "Selezione nodi correlati",
   "rendering": "Rendering",
   "reset_default": "Reset default",
   "resize_columns" : "Ridimensiona colonne",

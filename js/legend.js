@@ -13,7 +13,7 @@ gtiz_legend.context_menu = [{
   id : 'legend-menu-selection-mode',
   options : [{
       label : () => {
-        return gtiz_locales.current.qualitative_selection;
+        return gtiz_locales.current.related_nodes_selection;
       },
       value : 'qualitative',
       icon : 'iconic-information'
