@@ -81,37 +81,17 @@ gtiz_help.settings = [{
   }
 }];
 
-/**
- * Build modal
- * 
- */
-gtiz_help.buildModal = function(title, contents, feedback) {
-  let modal = document.querySelector('.modal');
-  modal.classList.add('modal-help');
-  if (title) {
-    let m_header = modal.querySelector('.modal-header');
-    m_header.innerHTML = '<h3>' + title + '</h3>';
-  }
-  if (contents) {
-    let m_body = modal.querySelector('.modal-body');
-    m_body.innerHTML = contents;
-  }
-  if (feedback) {
-    let m_feedback = modal.querySelector('.modal-feedback');
-    m_feedback.classList.add('info');
-    m_feedback.classList.add('show');
-    m_feedback.innerHTML = feedback;
-  }
-  gtiz_settings.body.classList.add('show-modal');
-};
-
 gtiz_help.getHelp = function(type) {
   let help = gtiz_help.settings.find(setting => setting.card == type);
   if (help) {
     let title = help.title();
-    let contents = help.contents();
+    let contents = [];
+    let content = document.createElement('div');
+    content.innerHTML = help.contents();
+    contents.push(content);
     let feedback = help.feedback();
-    gtiz_help.buildModal(title, contents, feedback);
+    let f_type = 'info';
+    gtiz_modal.buildModal(title, contents, feedback, f_type);
   }
 }
 

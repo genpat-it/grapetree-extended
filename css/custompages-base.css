@@ -2190,6 +2190,172 @@ aside code,
   }
 }
 
+/* NOTIFIER */
+.notifier::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  backdrop-filter: blur(0.2rem);
+  opacity: 0;
+  z-index: -1;
+  visibility: hidden;
+  -webkit-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+}
+
+.show-notifier .notifier::before {
+  opacity: 1;
+  z-index: 1000;
+  visibility: visible;
+}
+
+.notifier::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--secondary-ultra-light);
+  opacity: 0;
+  z-index: -1;
+  visibility: hidden;
+  -webkit-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+}
+
+.show-notifier .notifier::after {
+  opacity: 0.8;
+  z-index: 1001;
+  visibility: visible;
+}
+
+.notifier {
+  position: fixed;
+  z-index: -1;
+  visibility: hidden;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-content: flex-end;
+  align-items: flex-end;
+  flex-direction: column;
+}
+
+.show-notifier .notifier {
+  z-index: 1002;
+  visibility: visible;
+}
+
+.notifier-contents {
+  position: relative;
+  z-index: 1003;
+  margin-right: 2.4rem;
+  margin-left: auto;
+  margin-bottom: 2.1rem;
+  width: 24rem;
+  background-color: var(--white);
+  border-radius: 1.6rem;
+  padding: 2.4rem;
+  padding-top: 2.9rem;
+  opacity: 0;
+  -webkit-transform: translateY(21px);
+  transform: translateY(21px);
+  -webkit-box-shadow: 1px 0px 21px 0px rgba(0,0,0,0.08);
+  box-shadow: 1px 0px 21px 0px rgba(0,0,0,0.08);
+  -webkit-transition: all 0s ease 0s;
+  transition: all 0s ease 0s;
+}
+
+.show-notifier .notifier-contents {
+  opacity: 1;
+  -webkit-transform: translateY(0);
+  transform: translateY(0);
+  -webkit-transition: opacity 0.3s ease 0.3s, transform 0.3s ease 0.3s;
+  transition: opacity 0.3s ease 0.3s, transform 0.3s ease 0.3s;
+}
+
+.notifier-close {
+  /*PLEASE NOTE: modal close container should include the iconic <i> tag in html*/
+  position: absolute;
+  right: 1.3rem;
+  top: 1.3rem;
+  cursor: pointer;
+  z-index: 1000;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.notifier-contents h3 {
+  font-size: 1.3rem;
+  font-weight: 400;
+  margin-top: 0;
+  margin-bottom: 1.3rem;
+}
+
+.notifier-contents p,
+.notifier-contents ul,
+.notifier-contents ol {
+  font-size: 1.5rem;
+  margin-bottom: 1.3rem;
+}
+
+.notifier-contents ul,
+.notifier-contents ol {
+  padding-left: 0;
+  list-style-position: inside;
+}
+
+.notifier-contents a {
+  color: var(--main);
+  text-decoration: none;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.notifier-contents a:hover {
+  color: var(--accent);
+}
+
+.notifier-label {
+  color: var(--secondary-dark);
+  font-size: 1.2rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  margin-bottom: 0.5rem;
+}
+
+.notifier-feedback {
+  display: block;
+}
+
+/* .notifier-feedback.show {
+  display: block;
+  margin-top: 2.1rem;
+} */
+
+.notifier-feedback p {
+  font-size: 1.1rem;
+  margin-bottom: 0;
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
+  color: var(--accent);
+}
+
+.notifier-feedback.warning p {
+  color: var(--red);
+}
+
+.notifier-feedback.info p {
+  color: var(--secondary-dark);
+}
+
 /* MODAL */
 
 .modal::before {

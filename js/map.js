@@ -16,6 +16,7 @@ gtiz_map.markers_type = 'piechart'; // or heatmap
 gtiz_map.clustering_base = 2; // changing the base value will change the sensibility of the geographical delta for clustering
 gtiz_map.samples_amount = [];
 gtiz_map.samples_colors_index = [];
+gtiz_map.geojson_from_metadata = ''; // populated if .tsv contains coordinates
 gtiz_map.geojson = ''; // to be populated on loadJSON
 
 gtiz_map.map_container = document.querySelector('.map-container');
@@ -39,7 +40,7 @@ gtiz_map.hexToRgb = function (hex) {
 gtiz_map.toggleMarkerType = function(value) {
   if (value) {
     gtiz_map.markers_type = value;
-    gtiz_map.defineMarkers(gtiz_tree.filtered_nodes);
+    gtiz_map.defineMarkers();
   } else {
     console.log('Oops! Value not defined.');
   }
@@ -48,14 +49,14 @@ gtiz_map.toggleMarkerType = function(value) {
 gtiz_map.setMaxMarkerValue = function(value) {
   if (value) {
     gtiz_map.point_max_radius = parseInt(value);
-    gtiz_map.defineMarkers(gtiz_tree.filtered_nodes);
+    gtiz_map.defineMarkers();
   }
 }
 
 gtiz_map.setMinMarkerValue = function(value) {
   if (value) {
     gtiz_map.point_min_radius = parseInt(value);
-    gtiz_map.defineMarkers(gtiz_tree.filtered_nodes);
+    gtiz_map.defineMarkers();
   }
 }
 
@@ -66,7 +67,7 @@ gtiz_map.resetMinMaxMarkerValues = function() {
   gtiz_map.point_max_radius = gtiz_map.point_max_radius_default;
   min_input.value = gtiz_map.point_min_radius;
   max_input.value =  gtiz_map.point_max_radius;
-  gtiz_map.defineMarkers(gtiz_tree.filtered_nodes);
+  gtiz_map.defineMarkers();
 }
 
 gtiz_map.getMaxMarkerValues = function() {
@@ -105,7 +106,7 @@ gtiz_map.resetMapDelta = function() {
     select.append(option);
   });
   select.value = delta;
-  gtiz_map.definePoints(delta, type, nodes);
+  gtiz_map.init();
 }
 
 gtiz_map.setMapDelta = function(value) {
@@ -113,7 +114,7 @@ gtiz_map.setMapDelta = function(value) {
   let delta = type == 'geographical' ? parseInt(value) : value;
   let nodes = gtiz_tree.filtered_nodes;
   gtiz_map.delta = delta;
-  gtiz_map.definePoints(delta, type, nodes);
+  gtiz_map.init();
 };
 
 gtiz_map.getMapDeltaSelectDefault = function() {
@@ -174,9 +175,22 @@ gtiz_map.toggleAggregationMode = function(value) {
     let select_value = value == 'geographical' ? gtiz_map.default_delta : gtiz_tree.tree.display_category;
     gtiz_map.delta = select_value;
     select.value = select_value;
-    gtiz_map.setMapDelta(select);
+    gtiz_map.setMapDelta(select_value);
   } else {
     console.log('Oops! Value not defined.');
+  }
+}
+
+gtiz_map.setMetaGeoJSON = function (geoJ) {
+  if (geoJ) {
+    function isString(obj) {
+      return typeof obj === "string";
+    }
+    if (!isString(geoJ)) {
+      gtiz_map.geojson_from_metadata = JSON.stringify(geoJ);
+    } else {
+      gtiz_map.geojson_from_metadata = geoJ;
+    }
   }
 }
 
@@ -187,10 +201,8 @@ gtiz_map.setGeoJSON = function (geoJ) {
     }
     if (!isString(geoJ)) {
       gtiz_map.geojson = JSON.stringify(geoJ);
-      window.global_geoJ = JSON.stringify(geoJ);
     } else {
       gtiz_map.geojson = geoJ;
-      window.global_geoJ = geoJ;
     }
   }
 }
@@ -348,10 +360,30 @@ gtiz_map.initMap = () => {
   this.map = L.map('map-div', { zoomControl: false }).setView([42.00, 13.00], 5);
   this.osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 18,
+    zoomSnap: 0,
+    noWrap: true,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(this.map);
   gtiz_map.initialized = true;
-  gtiz_map.map_container.classList.add('map-container-initialized');
+  /**
+   * Allow drag until world edges and avoid empty spaces
+   * 
+   */
+  let southWest = L.latLng(-89.98155760646617, -180);
+  let northEast = L.latLng(89.99346179538875, 180);
+  let bounds = L.latLngBounds(southWest, northEast);
+  map.setMaxBounds(bounds);
+  map.on('drag', function() {
+    map.panInsideBounds(bounds, { animate: false });
+  });
+  /**
+   * Set min zoom to avoid empty space around world edges
+   * 
+   */
+  let width = gtiz_map.map_container.clientWidth;
+  let height = gtiz_map.map_container.clientHeight;
+  let min_zoom = Math.ceil(Math.log2(Math.max(width, height) / 256));
+  map.setMinZoom(min_zoom);
 } // initMap
 
 gtiz_map.resetMap = function() {
@@ -360,8 +392,9 @@ gtiz_map.resetMap = function() {
     map.remove();
     gtiz_map.initialized = false;
     gtiz_map.load_count = 0;
+    gtiz_map.geojson_from_metadata = '';
     gtiz_map.geojson = '';
-    gtiz_map.map_container.classList.remove('map-container-initialized');
+    gtiz_map.map_container.classList.remove('map-initialized');
   }
 }
 
@@ -503,8 +536,9 @@ gtiz_map.getPopUpSampleLink = (all, nodes, code, color) => {
   return link;
 }
 
-gtiz_map.defineMarkers = (filtered_nodes) => {
+gtiz_map.defineMarkers = () => {
   let tree = gtiz_tree.tree;
+  let filtered_nodes = gtiz_tree.filtered_nodes;
   let metadata = tree.metadata;
   let colors = tree.category_colours;
   let category = tree.display_category;
@@ -681,7 +715,12 @@ gtiz_map.defineMarkers = (filtered_nodes) => {
   });
 }
 
-gtiz_map.reBuildGeoJSON = (data, delta, type, filter) => {
+gtiz_map.reBuildGeoJSON = () => {
+  
+  let data = JSON.parse(gtiz_map.geojson);
+  let type = gtiz_map.delta_type;
+  let delta = gtiz_map.delta;
+
   /**
    * 
    * We need to rebuild the GeoJSON provided as an url parameter to merge samples codes with same coordinates, first of all this will avoid the marker overlap but also get the basis to make (and color) pie chart when multiple samples are present in the same point.
@@ -854,46 +893,9 @@ gtiz_map.reBuildGeoJSON = (data, delta, type, filter) => {
       r_obj.features[foundIndex].properties.samples.push(sample);
     }
   });
-  // this.pointLayer.addData(data);
-  this.pointLayer.addData(r_obj); 
-  // gtiz_map.calculatePointRadius(samples_amount);
-  gtiz_map.defineMarkers(filter);
-  gtiz_map.updateNodesInMap();
-  gtiz_map.load_count++;
-  if (gtiz_map.load_count == 1) {
-    // fitBounds force the map to zoom and allow the view of all the point, padding add a space around
-    this.map.fitBounds(this.pointLayer.getBounds(), {
-      padding: [42, 42]
-    });
-  }
+  this.pointLayer.addData(r_obj);
 
 } // reBuildGeoJSON
-
-/**
- * 
- * Add data to map from geoJSON file.
- * 
- */
-gtiz_map.loadGeoJson = (delta, type, filter) => {
-  if ('geo' in gtiz_file_handler.params) {
-    if (gtiz_map.geojson && gtiz_map.geojson.length > 0) {
-      let data = JSON.parse(gtiz_map.geojson);
-      gtiz_map.reBuildGeoJSON(data, delta, type, filter);
-    } else {
-      this.urlParams = new URLSearchParams(window.location.search);
-      this.geoPath = this.urlParams.get('geo');
-      $.getJSON(this.geoPath, (data) => {
-        gtiz_map.geojson = JSON.stringify(data);
-        gtiz_map.reBuildGeoJSON(data, delta, type, filter);
-      });
-    }
-  } else {
-    if (gtiz_map.geojson != '') {
-      let data = JSON.parse(gtiz_map.geojson);
-      gtiz_map.reBuildGeoJSON(data, delta, type, filter);
-    }
-  }
-} // loadGeoJson
 
 /**
  * 
@@ -902,8 +904,8 @@ gtiz_map.loadGeoJson = (delta, type, filter) => {
  * Arguments: delta and type are mandatory.
  * 
  */
-gtiz_map.definePoints = (delta, type, filter) => {
-  
+gtiz_map.definePoints = () => {
+
   /**
    * If point layer exists clear layers.
    * 
@@ -912,7 +914,7 @@ gtiz_map.definePoints = (delta, type, filter) => {
   if (point_layer) {
     point_layer.clearLayers();
   }
-
+  
   /**
    * If samples amount is defined, clear it.
    * 
@@ -920,23 +922,12 @@ gtiz_map.definePoints = (delta, type, filter) => {
   if (gtiz_map.samples_amount && gtiz_map.samples_amount.length > 0) {
     gtiz_map.samples_amount = [];
   }
-
-  /**
-   * If delta and type are not defined, assign default value
-   * 
-   */
-  if (!delta) {
-    delta = gtiz_map.default_delta;
-  }
-  if (!type) {
-    type = gtiz_map.default_delta_type;
-  }
-
+  
   let icon = L.divIcon({
     className: 'pie-marker-icon',
     // html: '<div class="pie-chart">...</div>',
   });
-
+  
   /**
    * 
    * Empty layer to host points
@@ -953,8 +944,7 @@ gtiz_map.definePoints = (delta, type, filter) => {
       gtiz_map.samples_amount.push(samples.length);
     }
   }).addTo(this.map);
-  
-  gtiz_map.loadGeoJson(delta, type, filter);
+
 } // definePoints
 
 /**
@@ -1203,3 +1193,142 @@ gtiz_map.context_menu = [{
     gtiz_map.toggleMarkerType(value);
   }
 }];
+
+gtiz_map.init = function() {
+  
+  gtiz_map.map_container.classList.remove('map-initialized');
+  gtiz_map.map_container.classList.remove('map-not-initialized');
+  gtiz_loader.addLoader(gtiz_map.map_container);
+
+  setTimeout(() => {
+    if (!gtiz_map.geojson || gtiz_map.geojson == '') {
+      // here we give priority to geo file loaded as url instead of coordinates loaded in metadata
+      if ('geo' in gtiz_file_handler.params) {
+        if (!gtiz_map.initialized) {
+          // open map component simulating map toggle click
+          let map_trigger = document.querySelector('[data-view="map"]');
+          if (map_trigger) {
+            let selection = map_trigger.getAttribute('data-selection');
+            if (selection == 'off') {
+              map_trigger.click();
+            }
+          }
+        }
+        let geo = gtiz_file_handler.params.geo;
+        gtiz_file_handler.getData(geo).then((obj) => {
+          if (obj.error) {
+            let title = '<i class="iconic iconic-warning-triangle"></i> ' + gtiz_locales.current.oops;
+            let contents = [];
+            let content = document.createElement('p');
+            content.innerHTML = gtiz_locales.current.missing_net_geo_alert;
+            contents.push(content);
+            let feedback = '<p>' + obj.text + '</p>';
+            let f_type = 'info';
+            gtiz_modal.buildNotifier(title, contents, feedback, f_type);
+            let map_node = document.querySelector('#map-div');
+            map_node.classList.add('map-not-initialized');
+            gtiz_loader.removeLoader(map_node);
+          } else {
+            gtiz_map.setGeoJSON(obj.text);
+            if (!gtiz_map.initialized) {
+              gtiz_map.initMap();
+            }
+            gtiz_map.definePoints();
+            gtiz_map.reBuildGeoJSON();
+            gtiz_map.defineMarkers();
+            gtiz_map.updateNodesInMap();
+            if (gtiz_map.map_container.classList.contains('map-not-initialized')) {
+              gtiz_map.map_container.classList.remove('map-not-initialized');
+            } 
+            gtiz_loader.removeLoader(gtiz_map.map_container);
+            gtiz_map.map_container.classList.add('map-initialized');
+            gtiz_map.load_count++;
+            if (gtiz_map.load_count == 1) {
+              // fitBounds force the map to zoom and allow the view of all the point, padding add a space around
+              map.fitBounds(pointLayer.getBounds(), {
+                padding: [21, 21]
+              });
+            }
+          }
+        }).catch((err) => {
+          console.log(err);
+          let title = '<i class="iconic iconic-warning-triangle"></i> ' + gtiz_locales.current.oops;
+          let contents = [];
+          let content = document.createElement('p');
+          content.innerHTML = gtiz_locales.geojson_file_generic_problem;
+          contents.push(content);
+          let feedback = '<p>' + err + '</p>';
+          let f_type = 'info';
+          gtiz_modal.buildNotifier(title, contents, feedback, f_type);
+        });
+        
+      } else {
+        if (gtiz_map.geojson_from_metadata && gtiz_map.geojson_from_metadata != '') {
+          let geoJ = gtiz_map.geojson_from_metadata;
+          gtiz_map.setGeoJSON(geoJ);
+          if (!gtiz_map.initialized) {
+            // open map component simulating map toggle click
+            let map_trigger = document.querySelector('[data-view="map"]');
+            if (map_trigger) {
+              let selection = map_trigger.getAttribute('data-selection');
+              if (selection == 'off') {
+                map_trigger.click();
+              }
+            }
+            gtiz_map.initMap();
+          }
+          gtiz_map.definePoints();
+          gtiz_map.reBuildGeoJSON();
+          gtiz_map.defineMarkers();
+          gtiz_map.updateNodesInMap();
+          if (gtiz_map.map_container.classList.contains('map-not-initialized')) {
+            gtiz_map.map_container.classList.remove('map-not-initialized');
+          } 
+          gtiz_loader.removeLoader(gtiz_map.map_container);
+          gtiz_map.map_container.classList.add('map-initialized');
+          gtiz_map.load_count++;
+          if (gtiz_map.load_count == 1) {
+            // fitBounds force the map to zoom and allow the view of all the point, padding add a space around
+            map.fitBounds(pointLayer.getBounds(), {
+              padding: [21, 21]
+            });
+          }
+  
+        } else {
+          let map_node = document.querySelector('#map-div');
+          map_node.classList.add('map-not-initialized');
+          gtiz_loader.removeLoader(map_node);
+        }
+      }
+    } else {
+      if (!gtiz_map.initialized) {
+        // open map component simulating map toggle click
+        let map_trigger = document.querySelector('[data-view="map"]');
+        if (map_trigger) {
+          let selection = map_trigger.getAttribute('data-selection');
+          if (selection == 'off') {
+            map_trigger.click();
+          }
+        }
+        gtiz_map.initMap();
+      }
+      gtiz_map.definePoints();
+      gtiz_map.reBuildGeoJSON();
+      gtiz_map.defineMarkers();
+      gtiz_map.updateNodesInMap();
+      if (gtiz_map.map_container.classList.contains('map-not-initialized')) {
+        gtiz_map.map_container.classList.remove('map-not-initialized');
+      } 
+      gtiz_loader.removeLoader(gtiz_map.map_container);
+      gtiz_map.map_container.classList.add('map-initialized');
+      gtiz_map.load_count++;
+      if (gtiz_map.load_count == 1) {
+        // fitBounds force the map to zoom and allow the view of all the point, padding add a space around
+        map.fitBounds(pointLayer.getBounds(), {
+          padding: [21, 21]
+        });
+      }
+    }
+  }, 500);
+
+}

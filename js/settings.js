@@ -634,29 +634,6 @@ gtiz_settings.closeModal = function () {
   m_feedback.innerHTML = "";
 }
 
-/**
- * Build modal
- * 
- */
-gtiz_settings.buildModal = function(title, contents, feedback) {
-  let modal = document.querySelector('.modal');
-  if (title) {
-    let m_header = modal.querySelector('.modal-header');
-    m_header.innerHTML = '<h3>' + title + '</h3>';
-  }
-  if (contents.length > 0) {
-    let m_body = modal.querySelector('.modal-body');
-    contents.forEach(content => {
-      m_body.append(content);
-    });
-  }
-  if (feedback) {
-    let m_feedback = modal.querySelector('.modal-feedback');
-    m_feedback.append(feedback);
-  }
-  gtiz_settings.body.classList.add('show-modal');
-};
-
 gtiz_settings.load_grapetree_btns.forEach(btn => {
   btn.addEventListener('click', function(e) {
     let mode = 'load';

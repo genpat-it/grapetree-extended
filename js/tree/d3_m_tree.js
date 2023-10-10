@@ -2013,21 +2013,13 @@ D3MSTree.prototype._unfixAllChildNodes=function(node,count){
                 }
         }
 
-};	
-   
+};
 
-D3MSTree.prototype._getIDsForNode= function(node_id){
-        var ids=[];
-        var group = this.grouped_nodes[node_id];
-        for (var ii in group){
-              var list = this.metadata_map[group[ii]];
-              if (list){
-                      ids = ids.concat(list);
-              
-              }
-              else{
-                      ids.push(group[ii]);
-              }
+D3MSTree.prototype._getIDsForNode = function(node_id) {
+        var ids = [];
+        var group = this.grouped_nodes[node_id] || [];
+        for (var ii = 0; ii < group.length; ii++) {
+            ids = ids.concat(this.metadata_map[group[ii]] || group[ii]);
         }
         return ids;
 };
@@ -2369,14 +2361,9 @@ D3MSTree.prototype.resize = function() {
  */
 D3MSTree.prototype.getAllNodesIDs = function() {
   var g_nodes_ids = [];
-  var nodes_ids = [];
-  for (var i in this.force_nodes) {
+  for (var i = 0; i < this.force_nodes.length; i++) {
     var node = this.force_nodes[i];
-    nodes_ids.push(node.id);
-  }
-  for (var i = 0; i < nodes_ids.length; i++) {
-    g_nodes_ids.push(this._getIDsForNode(nodes_ids[i]));
-    g_nodes_ids = g_nodes_ids.flat(1);
+    g_nodes_ids = g_nodes_ids.concat(this._getIDsForNode(node.id));
   }
   return g_nodes_ids;
 }
@@ -2388,7 +2375,6 @@ D3MSTree.prototype.getAllNodesIDs = function() {
 D3MSTree.prototype.getAllSelectedNodesIDs = function() {
   var g_nodes_ids = [];
   var nodes_ids = this.getSelectedNodeIDs();
-  console.log(nodes_ids);
   for (var i = 0; i < nodes_ids.length; i++) {
     g_nodes_ids.push(this._getIDsForNode(nodes_ids[i]));
     g_nodes_ids = g_nodes_ids.flat(1);

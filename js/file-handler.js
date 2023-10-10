@@ -1,3 +1,124 @@
+let gtiz_file_handler = {};
+gtiz_file_handler.tsv_metadata = undefined;
+gtiz_file_handler.files_to_load = [];
+gtiz_file_handler.save_options = [
+	{
+		type : 'button',
+		id : 'file-handler-save-json',
+		label : gtiz_locales.current.save_as_complete_json + ' (.json)',
+		icon : 'iconic-file',
+		function : () => {
+			gtiz_file_handler.saveGrapeTreeAsJson();
+		}
+	}, {
+		type : 'button',
+		id : 'file-handler-export-nwk',
+		label : gtiz_locales.current.export_newick + ' (.nwk)',
+		icon : 'iconic-file-text',
+		function : () => {
+			let text = gtiz_tree.tree.getTreeAsNewick();
+    	let timestamp =  Date.now();
+    	let name = "grapetree" + timestamp + ".nwk";
+    	let feedback = document.querySelector('.modal-feedback');
+			if (text) {
+				gtiz_file_handler.saveTextAsFile(text, name);
+				feedback.innerHTML = '';
+				feedback.classList.remove('show');
+			} else {
+				feedback.innerHTML = '<p>' + gtiz_locales.current.save_feedback_newick + '</p>';
+				feedback.classList.add('show');
+			}
+		}
+	}, {
+		type : 'button',
+		id : 'file-handler-export-metadata',
+		label : gtiz_locales.current.export_metadata + ' (.tsv)',
+		icon : 'iconic-file-text',
+		function : () => {
+			let text = gtiz_file_handler.tsv_metadata ? gtiz_file_handler.tsv_metadata : undefined;
+			let timestamp =  Date.now();
+    	let name = "metadata" + timestamp + ".tsv";
+			let feedback = document.querySelector('.modal-feedback');
+			if (text) {
+				gtiz_file_handler.saveTextAsFile(text, name);
+				feedback.innerHTML = '';
+				feedback.classList.remove('show');
+			} else {
+				feedback.innerHTML = '<p>' + gtiz_locales.current.save_feedback_metadata + '</p>';
+				feedback.classList.add('show');
+			}
+		}
+	}, {
+		type : 'button',
+		id : 'file-handler-export-geojson',
+		label : gtiz_locales.current.export_geoJson + ' (.geoJson)',
+		icon : 'iconic-pin',
+		function : () => {
+			let text = gtiz_map.geojson;
+    	let timestamp =  Date.now();
+    	let name = "geoJson" + timestamp + ".geojson";
+			let feedback = document.querySelector('.modal-feedback');
+			if (text) {
+				gtiz_file_handler.saveTextAsFile(text, name);
+				feedback.innerHTML = '';
+				feedback.classList.remove('show');
+			} else {
+				feedback.innerHTML = '<p>' + gtiz_locales.current.save_feedback_geojson + '</p>';
+				feedback.classList.add('show');
+			}
+		}
+	}
+];
+gtiz_file_handler.load_options = [
+	{
+		type : 'file',
+		id : 'm-upload-file',
+		label : gtiz_locales.current.select_a_file,
+		icon : 'iconic-file',
+		listener : (value) => {
+			gtiz_file_handler.modalSetFilesToLoad(value);
+		},
+		accept : '.json, .nwk, .tsv',
+		function : () => {
+			gtiz_file_handler.modalLoadSelectedFiles();
+		}
+	}
+];
+
+gtiz_file_handler.drop_areas = document.querySelectorAll('.drop-area');
+
+/**
+ * Get file extention from string
+ * 
+ * @param {String} filename File name string
+ * @returns string of file extension in lowercase
+ * 
+ */
+gtiz_file_handler.getFileExtension = function(filename) {
+  const dot_index = filename.lastIndexOf('.');
+  if (dot_index === -1) {
+    // No extension found
+    return '';
+  }
+  return filename.substring(dot_index + 1).toLowerCase();
+}
+
+/**
+ * Control if a string is a Json
+ * 
+ * @param {String} str 
+ * @returns true/false
+ * 
+ */
+gtiz_file_handler.isValidJSON = function(str) {
+  try {
+    JSON.parse(str);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
 /**
  * 
  * Meta2GeoJSON
@@ -6,7 +127,7 @@
  * 
  */
 
-Meta2GeoJSON = {
+gtiz_file_handler.Meta2GeoJSON = {
 	newGeoJson: function () {
 		return {
 			"features": [],
@@ -94,126 +215,6 @@ Meta2GeoJSON = {
 	}
 }
 
-let gtiz_file_handler = {};
-gtiz_file_handler.tsv_metadata = undefined;
-gtiz_file_handler.files_to_load = [];
-gtiz_file_handler.save_options = [
-	{
-		type : 'button',
-		id : 'file-handler-save-json',
-		label : gtiz_locales.current.save_as_complete_json + ' (.json)',
-		icon : 'iconic-file',
-		function : () => {
-			gtiz_file_handler.saveGrapeTreeAsJson();
-		}
-	}, {
-		type : 'button',
-		id : 'file-handler-export-nwk',
-		label : gtiz_locales.current.export_newick + ' (.nwk)',
-		icon : 'iconic-file-text',
-		function : () => {
-			let text = gtiz_tree.tree.getTreeAsNewick();
-    	let timestamp =  Date.now();
-    	let name = "grapetree" + timestamp + ".nwk";
-    	let feedback = document.querySelector('.modal-feedback');
-			if (text) {
-				gtiz_file_handler.saveTextAsFile(text, name);
-				feedback.innerHTML = '';
-				feedback.classList.remove('show');
-			} else {
-				feedback.innerHTML = '<p>' + gtiz_locales.current.save_feedback_newick + '</p>';
-				feedback.classList.add('show');
-			}
-		}
-	}, {
-		type : 'button',
-		id : 'file-handler-export-metadata',
-		label : gtiz_locales.current.export_metadata + ' (.tsv)',
-		icon : 'iconic-file-text',
-		function : () => {
-			let text = gtiz_file_handler.tsv_metadata ? gtiz_file_handler.tsv_metadata : undefined;
-			let timestamp =  Date.now();
-    	let name = "metadata" + timestamp + ".tsv";
-			let feedback = document.querySelector('.modal-feedback');
-			if (text) {
-				gtiz_file_handler.saveTextAsFile(text, name);
-				feedback.innerHTML = '';
-				feedback.classList.remove('show');
-			} else {
-				feedback.innerHTML = '<p>' + gtiz_locales.current.save_feedback_metadata + '</p>';
-				feedback.classList.add('show');
-			}
-		}
-	}, {
-		type : 'button',
-		id : 'file-handler-export-geojson',
-		label : gtiz_locales.current.export_geoJson + ' (.geoJson)',
-		icon : 'iconic-pin',
-		function : () => {
-			let text = gtiz_map.geojson;
-    	let timestamp =  Date.now();
-    	let name = "geoJson" + timestamp + ".geojson";
-			let feedback = document.querySelector('.modal-feedback');
-			if (text) {
-				gtiz_file_handler.saveTextAsFile(text, name);
-				feedback.innerHTML = '';
-				feedback.classList.remove('show');
-			} else {
-				feedback.innerHTML = '<p>' + gtiz_locales.current.save_feedback_geojson + '</p>';
-				feedback.classList.add('show');
-			}
-		}
-	}
-];
-gtiz_file_handler.load_options = [
-	{
-		type : 'file',
-		id : 'm-upload-file',
-		label : gtiz_locales.current.select_a_file,
-		icon : 'iconic-file',
-		listener : (value) => {
-			gtiz_file_handler.modalSetFilesToLoad(value);
-		},
-		accept : '.json, .nwk, .tsv',
-		function : () => {
-			gtiz_file_handler.modalLoadSelectedFiles();
-		}
-	}
-];
-gtiz_file_handler.drop_areas = document.querySelectorAll('.drop-area');
-
-/**
- * Get file extention from string
- * 
- * @param {String} filename File name string
- * @returns string of file extension in lowercase
- * 
- */
-gtiz_file_handler.getFileExtension = function(filename) {
-  const dot_index = filename.lastIndexOf('.');
-  if (dot_index === -1) {
-    // No extension found
-    return '';
-  }
-  return filename.substring(dot_index + 1).toLowerCase();
-}
-
-/**
- * Control if a string is a Json
- * 
- * @param {String} str 
- * @returns true/false
- * 
- */
-gtiz_file_handler.isValidJSON = function(str) {
-  try {
-    JSON.parse(str);
-    return true;
-  } catch (error) {
-    return false;
-  }
-}
-
 /**
  * Get contents from file to load
  * 
@@ -222,14 +223,41 @@ gtiz_file_handler.isValidJSON = function(str) {
  * 
  */
 gtiz_file_handler.getData = async function (url) {
-  const response = await fetch(url, {
-    method: "GET", // *GET, POST, PUT, DELETE, etc.
-    headers: {
-      "X-Requested-With": "XMLHttpRequest"
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "X-Requested-With": "XMLHttpRequest"
+      }
+    });
+
+    if (response.ok) {
+      const text = await response.text(); // Await here to get the text content
+      let obj = {
+        text: text, // Include the text content in the object
+        error: false
+      };
+      return obj;
+    } else {
+			let text = gtiz_locales.current.fetch_error + " Status: " + response.status + ". Url: " + url;
+			console.log(text);
+      let obj = {
+        text: text,
+        error: true
+      };
+      return obj;
     }
-  });
-  return response.text();
+  } catch (error) {
+    // Handle other errors, such as network issues
+    console.error("Error:", error);
+    let obj = {
+      text: "An error occurred: " + error.message,
+      error: true
+    };
+    return obj;
+  }
 }
+
 
 /**
  * 
@@ -260,6 +288,18 @@ gtiz_file_handler.restCallUtil = function (method, path) {
       xhr.setRequestHeader("Content-Type", "application/json");
       xhr.send();
   });
+}
+
+/**
+ * Show drag and drop area if net files are not present or there is an error on tree generation files.
+ * 
+ */
+gtiz_file_handler.initTreeDropArea = function() {
+	let tree_node = document.querySelector('.tree-container');
+	tree_node.classList.remove('tree-loading');
+	gtiz_loader.removeLoader(tree_node);
+	let body = document.querySelector('body');
+	body.classList.add('tree-not-defined');
 }
 
 /**
@@ -299,10 +339,18 @@ gtiz_file_handler.getJsonFromUrl = function(hashBased) {
  * @param {String} msg Message
  * @param {Array} lines Array of object containing the key-value pairs lines of the tsv file
  * @param {String} header_index Column headers
+ * 
  */
 gtiz_file_handler.parseMetadata = function(msg, lines, header_index) {
 	if( msg === 'Error') {
-		alert(gtiz_locales.current.malformed_metadata_file_msg);
+		console.log(gtiz_locales.current.malformed_metadata_file_msg);
+		let title = '<i class="iconic iconic-warning-triangle"></i> ' + gtiz_locales.current.oops;
+		let contents = [];
+		let content = document.createElement('p');
+		content.innerHTML = gtiz_locales.current.malformed_metadata_file_msg;
+		contents.push(content);
+		gtiz_modal.buildNotifier(title, contents);
+		gtiz_layout.body.classList.remove('tree-not-defined');
 		return;
 	}
 	let meta = {};
@@ -340,23 +388,26 @@ gtiz_file_handler.parseMetadata = function(msg, lines, header_index) {
 	}
 	gtiz_tree.tree.addMetadata(meta);
 	// to be changed in this way for parameters &x=title_name_longitute&y=title_name_latitudine
-	if (Meta2GeoJSON.checkMeta4geo(options) ) { //options = hash of metadata titles
-		let geoJ = Meta2GeoJSON.meta2GeoJson(meta);
-		gtiz_map.initMap();
-		gtiz_map.setGeoJSON(geoJ);
-		let cfg = gtiz_settings.cfg.find(cfg => cfg.card === 'map');
-		if (cfg) {
-			gtiz_settings.setMapCard();
-			let settings = [];
-			settings.push(cfg);
-			gtiz_settings.setView(settings);
-		}
-		gtiz_map.definePoints();
+	if (gtiz_file_handler.Meta2GeoJSON.checkMeta4geo(options) ) { //options = hash of metadata titles
+		let geoJ = gtiz_file_handler.Meta2GeoJSON.meta2GeoJson(meta);
+		gtiz_map.setMetaGeoJSON(geoJ);
 	} else {
-		console.log('(GEO)WARNING: titles not found in metadata:' + Meta2GeoJSON.xName +', '+ Meta2GeoJSON.yName);
+		let message = '(GEO)WARNING: titles not found in metadata:' + gtiz_file_handler.Meta2GeoJSON.xName +', '+ gtiz_file_handler.Meta2GeoJSON.yName;
+		console.log(message);
 	}
 	gtiz_tree.tree.changeCategory(category);
 	gtiz_tree.tree.setNodeText(category);
+  let components = ['tree', 'legend'];
+	let action = 'remove';
+	gtiz_layout.uiLoadingManager(components, action);
+	// open legend component simulating legend click
+	let legend_trigger = document.querySelector('[data-view="legend"]');
+	if (legend_trigger) {
+		let selection = legend_trigger.getAttribute('data-selection');
+		if (selection == 'off') {
+			legend_trigger.click();
+		}
+	}
 	// to use original tree button we need gtiz_tree.tree_raw populated with an object containing also metadata, so we added the following line. Please find more in the README.md file under Dev notes paragraph
 	gtiz_tree.tree_raw = gtiz_tree.tree.getTreeAsObject();
 	gtiz_metadata.init();
@@ -416,42 +467,95 @@ gtiz_file_handler.loadNetFiles = function() {
 			}
     }
   }
-
 	if (tree) {
 		gtiz_file_handler.getData(tree).then((obj) => {
-  		let is_valid = gtiz_file_handler.isValidJSON(obj);
-			if (is_valid) {
-				gtiz_file_handler.tree_data = JSON.parse(obj);
+			if (obj.error) {
+				gtiz_file_handler.initTreeDropArea();
+				let title = '<i class="iconic iconic-warning-triangle"></i> ' + gtiz_locales.current.oops;
+				let contents = [];
+				let content = document.createElement('p');
+				content.innerHTML = gtiz_locales.current.missing_net_tree_alert;
+				contents.push(content);
+				let feedback = '<p>' + obj.text + '</p>';
+				let f_type = 'info';
+				gtiz_modal.buildNotifier(title, contents, feedback, f_type);
 			} else {
-				data = {};
-				if (obj.substring(0,6) === "#NEXUS"){
-					data['nexus'] = obj;
+				let is_valid = gtiz_file_handler.isValidJSON(obj.text);
+				if (is_valid) {
+					gtiz_file_handler.tree_data = JSON.parse(obj.text);
+					data = gtiz_file_handler.tree_data;
 				} else {
-					data['nwk'] = obj;
+					data = {};
+					if (obj.text.substring(0,6) === "#NEXUS"){
+						data['nexus'] = obj.text;
+					} else {
+						data['nwk'] = obj.text;
+					}
+					let layout_select = document.querySelector("#layout-select");
+					data['layout_algorithm'] = layout_select ? layout_select.value : '';
 				}
-				let layout_select = document.querySelector("#layout-select");
-				data['layout_algorithm'] = layout_select ? layout_select.value : '';
-			}
-			// gtiz_tree.tree_raw = data;
-			// gtiz_tree.loadMSTree(tree_raw);
-			// to use original tree button we need gtiz_tree.tree_raw populated with an object containing also metadata please find more in the README.md file under Dev notes paragraph
-			gtiz_tree.loadMSTree(data);
-			if (gtiz_tree.tree && metadata) {
-				gtiz_file_handler.getData(metadata).then((obj) => {
-					gtiz_file_handler.loadMetadataText(obj);
-				}).catch((err) => {
-					console.log(err);
-				});
-			}
-			if (gtiz_tree.tree && geo) {
-				gtiz_map.initMap();
-				gtiz_map.definePoints();
+				// gtiz_tree.tree_raw = data;
+				// gtiz_tree.loadMSTree(tree_raw);
+				// to use original tree button we need gtiz_tree.tree_raw populated with an object containing also metadata please find more in the README.md file under Dev notes paragraph
+				gtiz_tree.loadMSTree(data, is_valid);
+				if (gtiz_tree.tree) {
+					if (metadata) {
+						gtiz_file_handler.getData(metadata).then((obj) => {
+							if (obj.error) {
+								let title = '<i class="iconic iconic-warning-triangle"></i> ' + gtiz_locales.current.oops;
+								let contents = [];
+								let content = document.createElement('p');
+								content.innerHTML = gtiz_locales.current.missing_net_tsv_alert;
+								contents.push(content);
+								let feedback = '<p>' + obj.text + '</p>';
+								let f_type = 'info';
+								gtiz_modal.buildNotifier(title, contents, feedback, f_type);
+								let components = ['tree', 'legend'];
+								let action = 'remove';
+								gtiz_layout.uiLoadingManager(components, action);
+								gtiz_map.init();
+							} else {
+								gtiz_file_handler.loadMetadataText(obj.text);
+								gtiz_map.init();
+							}
+						}).catch((err) => {
+							console.log(err);
+							let title = '<i class="iconic iconic-warning-triangle"></i> ' + gtiz_locales.current.oops;
+							let contents = [];
+							let content = document.createElement('p');
+							content.innerHTML = gtiz_locales.metadata_file_generic_problem;
+							contents.push(content);
+							let feedback = '<p>' + err + '</p>';
+							let f_type = 'info';
+							gtiz_modal.buildNotifier(title, contents, feedback, f_type);
+							let components = ['tree', 'legend'];
+							let action = 'remove';
+							gtiz_layout.uiLoadingManager(components, action);
+							gtiz_map.init();
+						});
+					} else {
+						let components = ['tree', 'legend'];
+						let action = 'remove';
+						gtiz_layout.uiLoadingManager(components, action);
+						gtiz_map.init();
+					}
+				}
 			}
 		}).catch((err) => {
 			console.log(err);
+			gtiz_file_handler.initTreeDropArea();
+			let title = '<i class="iconic iconic-warning-triangle"></i> ' + gtiz_locales.current.oops;
+			let contents = [];
+			let content = document.createElement('p');
+			content.innerHTML = gtiz_locales.current.missing_net_tree_alert;
+			contents.push(content);
+			let feedback = '<p>' + err + '</p>';
+			let f_type = 'info';
+			gtiz_modal.buildNotifier(title, contents, feedback, f_type);
 		});
 	} else {
-		console.log('Tree not defined');
+		gtiz_file_handler.initTreeDropArea();
+		console.log('Tree not defined in url');
 	}
 }
 
@@ -476,7 +580,7 @@ gtiz_file_handler.dropFiles = function(div) {
 			let body = document.createElement('div');
 			body.innerHTML = gtiz_locales.current.dropped_files_alert;
 			contents.push(body);
-			gtiz_settings.buildModal(title, contents);
+			gtiz_modal.buildModal(title, contents);
 		}
 	});
 }
@@ -488,7 +592,14 @@ gtiz_file_handler.loadFailed = function(msg) {
 	console.log(msg);
 }
 
-gtiz_file_handler.loadTreeText = function(tree) {
+/**
+ * Load tree from uploaded file contents
+ * 
+ * @param {Object} tree Object containing tree data coming from files upload
+ * @param {Boolean} valid if true data is to be considered as a complete json tree
+ * 
+ */
+gtiz_file_handler.loadTreeText = function(tree, valid) {
 	gtiz_tree.initiateLoading("Processing tree file");
 	let metadata_select = document.querySelector('#tree-metadata-select');
 	let node_label_text = document.querySelector('#tree-node-label-text');
@@ -519,7 +630,7 @@ gtiz_file_handler.loadTreeText = function(tree) {
 			}
 		}
 		gtiz_tree.tree_raw = data;
-		gtiz_tree.loadMSTree(gtiz_tree.tree_raw);
+		gtiz_tree.loadMSTree(gtiz_tree.tree_raw, valid);
 		// we need to (re)set the category list for select box
 		let metadata_options = data.metadata_options;
 		if (metadata_options) {
@@ -546,6 +657,13 @@ gtiz_file_handler.loadTreeText = function(tree) {
 					}
 				}
 			}
+			let l_action = 'remove';
+			let l_components = ['tree', 'legend'];
+			gtiz_layout.uiLoadingManager(l_components, l_action);
+		} else {
+			let l_action = 'remove';
+			let l_components = ['tree', 'legend'];
+			gtiz_layout.uiLoadingManager(l_components, l_action);
 		}
 		let category = data.initial_category;
 		if (category) {
@@ -567,13 +685,20 @@ gtiz_file_handler.distributeFile = function(text, filename) {
     gtiz_map.resetMap();
   }
 	if (extension === 'json') {
+		let l_action = 'add';
+		let l_components = ['tree', 'map', 'legend'];
+		gtiz_layout.uiLoadingManager(l_components, l_action);
 		let obj = JSON.parse(text);
-		gtiz_file_handler.loadTreeText(text);
+		let valid = true;
+		gtiz_file_handler.loadTreeText(text, valid);
 		let header_tag = document.querySelector('#headertag');
 		header_tag.classList.add('show');
 		header_tag.innerHTML = filename;
 	}
 	if (extension === 'nwk') {
+		let l_action = 'add';
+		let l_components = ['tree'];
+		gtiz_layout.uiLoadingManager(l_components, l_action);
 		gtiz_file_handler.loadTreeText(text);
 		let header_tag = document.querySelector('#headertag');
 		header_tag.classList.add('show');
@@ -582,30 +707,43 @@ gtiz_file_handler.distributeFile = function(text, filename) {
 	if (extension === 'tsv') {
 		gtiz_tree.current_metadata_file = text;
 		if (gtiz_tree.tree) {
+			let l_action = 'add';
+			let l_components = ['tree', 'map', 'legend'];
+			gtiz_layout.uiLoadingManager(l_components, l_action);
 			gtiz_file_handler.loadMetadataText(text);
+			gtiz_map.init();
 		} else {
 			let title = gtiz_locales.current.oops;
 			let contents = [];
 			let body = document.createElement('div');
 			body.innerHTML = gtiz_locales.current.missing_tree_alert;
 			contents.push(body);
-			gtiz_settings.buildModal(title, contents);
+			gtiz_modal.buildModal(title, contents);
 			console.log(gtiz_locales.current.missing_tree_alert);
 		}
 	}
 	if (extension == 'geojson') {
 		if (gtiz_tree.tree) {
+			let map_trigger = document.querySelector('[data-view="map"]');
+			if (map_trigger) {
+				let selection = map_trigger.getAttribute('data-selection');
+				if (selection == 'off') {
+					map_trigger.click();
+				}
+			}
+			let l_action = 'add';
+			let l_components = ['map'];
+			gtiz_layout.uiLoadingManager(l_components, l_action);
 			let geoJ = JSON.parse(text);
-			gtiz_map.initMap();
 			gtiz_map.setGeoJSON(geoJ);
-			gtiz_map.definePoints();
+			gtiz_map.init();
 		} else {
 			let title = gtiz_locales.current.oops;
 			let contents = [];
 			let body = document.createElement('div');
 			body.innerHTML = gtiz_locales.current.missing_tree_alert;
 			contents.push(body);
-			gtiz_settings.buildModal(title, contents);
+			gtiz_modal.buildModal(title, contents);
 			console.log(gtiz_locales.current.missing_tree_alert);
 		}
 	}
@@ -698,10 +836,12 @@ gtiz_file_handler.modalSetFilesToLoad = function(files) {
 };
 
 window.addEventListener('DOMContentLoaded', function(e) {
-	gtiz_tree.initiateLoading("Waiting for tree...");
-	gtiz_file_handler.loadNetFiles();
 	gtiz_file_handler.drop_areas.forEach(drop_area => {
 		gtiz_file_handler.dropFiles(drop_area);
 	});
-	// loadNetFiles();
+	let l_action = 'add';
+	let l_components = ['tree', 'map', 'legend'];
+	gtiz_layout.uiLoadingManager(l_components, l_action);	
+	gtiz_tree.initiateLoading("Waiting for tree...");
+	gtiz_file_handler.loadNetFiles();
 });

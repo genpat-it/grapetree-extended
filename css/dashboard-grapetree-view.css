@@ -365,12 +365,14 @@
   left: 0;
   right: 0;
   bottom: 0;
+  cursor: pointer;
   /* -webkit-transition: opacity 0.3s ease;
   transition: opacity 0.3s ease; */
 }
 
-.dashboard-grapetree #graph-div {
-  cursor: pointer;
+.dashboard-grapetree .tree-container.tree-loading #graph-div {
+  display: none;
+  cursor: default;
 }
 
 .dashboard-grapetree #graph-div svg,
@@ -691,12 +693,20 @@
   }
 }
 
+.dashboard-grapetree .map-container.leaflet-grab {
+  cursor: default;
+}
+
+.dashboard-grapetree .map-container.map-initialized.leaflet-grab {
+  cursor: grab;
+}
+
 .dashboard-grapetree .map-container .card-context-tools {
   z-index: 999;
   display: none;
 }
 
-.dashboard-grapetree .map-container.map-container-initialized .card-context-tools {
+.dashboard-grapetree .map-container.map-initialized .card-context-tools {
   display: block;
 }
 
@@ -704,12 +714,24 @@
   background-color: var(--white);
 }
 
-.dashboard-grapetree .map-container .map-empy-message {
-  color: var(--secondary-dark);
+.dashboard-grapetree .map-container .leaflet-pane,
+.dashboard-grapetree .map-container .leaflet-control-container {
+  display: none;
 }
 
-.dashboard-grapetree .map-container-initialized .map-empy-message {
+.dashboard-grapetree .map-container.map-initialized .leaflet-pane,
+.dashboard-grapetree .map-container.map-initialized .leaflet-control-container {
+  display: block;
+}
+
+.dashboard-grapetree .map-container .map-empty-message {
+  color: var(--secondary-dark);
+  font-size: 1.5rem;
   display: none;
+}
+
+.dashboard-grapetree .map-container.map-not-initialized .map-empty-message {
+  display: block;
 }
 
 .dashboard-grapetree .metadata {
@@ -1031,9 +1053,9 @@
   overflow: hidden;
 }
 
-/* .dashboard-grapetree .card-legend {
-  padding-bottom: 1.3rem;
-} */
+.dashboard-grapetree .card-legend.legend-loading .card-title {
+  display: none;
+}
 
 .dashboard-grapetree .card-legend .list-box {
   padding-left: 0.2rem;
@@ -1050,6 +1072,10 @@
 /* Hide scrollbar for Chrome, Safari and Opera */
 .dashboard-grapetree .card-legend .card-form::-webkit-scrollbar,
 .dashboard-grapetree .card-context-menu .card-form::-webkit-scrollbar {
+  display: none;
+}
+
+.dashboard-grapetree .card-legend.legend-loading .card-form {
   display: none;
 }
 
@@ -1133,7 +1159,8 @@
   top: 2.2rem;
 }
 
-.dashboard-grapetree.tree-not-defined .card-context-tools {
+.dashboard-grapetree.tree-not-defined .card-context-tools,
+.dashboard-grapetree .tree-loading .card-context-tools {
   display: none;
 }
  

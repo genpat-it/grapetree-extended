@@ -397,6 +397,11 @@ gtiz_context.showMenu = function(type, trigger) {
     menu_node.style.zIndex = 9998;
     menu_node.style.width = width/10 + 'rem';
     menu_node.style.opacity = 0;
+    menu_node.addEventListener('click', (e) => {
+      if (e.target == menu_node) {
+        gtiz_context.closeContextMenu(type);
+      }
+    });
     let menu_content = gtiz_context.buildMenuUi(type);
     menu_node.append(menu_content);
 
@@ -487,7 +492,7 @@ gtiz_context.metadata_div.addEventListener("contextmenu", (e) => {
 
 gtiz_context.map_div.addEventListener("contextmenu", (e) => {
   let cls = gtiz_context.map_div.getAttribute('class');
-  if (cls.includes('map-container-initialized')) {
+  if (cls.includes('map-initialized')) {
     e.preventDefault();
     let type = 'map';
     let trigger = gtiz_context.map_div.querySelector('.card-context-menu-trigger');

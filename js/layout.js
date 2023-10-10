@@ -2,7 +2,7 @@ let gtiz_layout = {};
 
 gtiz_layout.settings = 'off';
 gtiz_layout.map = 'off';
-gtiz_layout.legend = 'on';
+gtiz_layout.legend = 'off';
 gtiz_layout.metadata = 'off';
 gtiz_layout.video = 'on';
 gtiz_layout.fullscreen = 'off';
@@ -169,6 +169,47 @@ gtiz_layout.showFooter = function() {
 }
 
 /**
+ * Manage loading Ui for tree component
+ * 
+ * @param {Array} component ['tree', 'map', 'legend'] 
+ * @param {String} action 'add' || 'remove'
+ * 
+ */
+gtiz_layout.uiLoadingManager = function(components, action) {
+  if (components) {
+    components.forEach(component => {
+      let node = undefined;
+      if (component == 'tree') {
+        let body = document.querySelector('body');
+		    body.classList.remove('tree-not-defined');
+        node = document.querySelector('.tree-container');
+        if (action == 'add') {
+          node.classList.add('tree-loading');
+        } else {
+          node.classList.remove('tree-loading');
+        }
+      }
+      if (component == 'map') {
+        node = document.querySelector('.map-container');
+      }
+      if (component == 'legend') {
+        node = document.querySelector('.legend .card-legend');
+        if (action == 'add') {
+          node.classList.add('legend-loading');
+        } else {
+          node.classList.remove('legend-loading');
+        }
+      }
+      if (action == 'add') {
+        gtiz_loader.addLoader(node);
+      } else {
+        gtiz_loader.removeLoader(node);
+      }
+    });
+  }
+}
+
+/**
  * Set height for the legend.
  * 
  * @param {Number} time Timing from css rules for legend
@@ -240,6 +281,14 @@ gtiz_layout.resizeMap = function (time) {
   setTimeout(() => {
     if (gtiz_map.initialized) {
       map.invalidateSize();
+      /**
+       * Set min zoom to avoid empty space around world edges
+       * 
+       */
+      let width = gtiz_map.map_container.clientWidth;
+      let height = gtiz_map.map_container.clientHeight;
+      let min_zoom = Math.ceil(Math.log2(Math.max(width, height) / 256));
+      map.setMinZoom(min_zoom);
       if (pointLayer.getBounds()) {
         map.fitBounds(pointLayer.getBounds(), {
           padding: [42, 42]
@@ -296,7 +345,11 @@ gtiz_layout.resizeLegend = function (time) {
  * @param {Array} obj Layout configuration object
  */
 gtiz_layout.setView = function(obj) {
-  gtiz_layout.body.setAttribute('class', 'dashboard dashboard-grapetree');
+  if (gtiz_layout.body.classList.contains('show-notifier')) {
+    gtiz_layout.body.setAttribute('class', 'show-notifier dashboard dashboard-grapetree');
+  } else {
+    gtiz_layout.body.setAttribute('class', 'dashboard dashboard-grapetree');
+  }
   if (!gtiz_tree.tree) {
     gtiz_layout.body.classList.add('tree-not-defined');
   }
@@ -327,7 +380,8 @@ gtiz_layout.setView = function(obj) {
   if (gtiz_layout.legend == 'on') {
     gtiz_layout.setLegendHeight();
   }
-  if (gtiz_layout.map == 'on') {
+  if (gtiz_layout.map == 'on' && gtiz_map.initialized) {
+    gtiz_map.init();
     gtiz_layout.resizeMap();
   }
   if (gtiz_layout.metadata == 'on') {
@@ -435,6 +489,13 @@ gtiz_layout.toggleMetadata = function(type, value) {
   gtiz_layout.metadata = value;
 }
 
+/**
+ * Toggle the component visibility
+ * 
+ * @param {String} type Component type (legend, map etc.) 
+ * @param {*} value on || off
+ * 
+ */
 gtiz_layout.toggleView = function(type, value) {
   gtiz_layout[type] = value;
   gtiz_layout.setView(gtiz_layout.cfg);
@@ -472,8 +533,4 @@ window.addEventListener("resize", function() {
     let legend_time = gtiz_layout.getStyleTime(gtiz_layout.legend_node);
     gtiz_layout.setLegendHeight(legend_time);
   }
-});
-
-window.addEventListener("load", function() {
-  gtiz_layout.init();
 });
