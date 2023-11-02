@@ -219,10 +219,10 @@ gtiz_legend.context_menu = [{
       return gtiz_locales.current.gradient_rainbow3;
     },
     value : 'gradient_rainbow3'
-  }, {
+  }, /* {
     label : gtiz_locales.current.custom,
     value : 'custom'
-  }],
+  } */],
   default : undefined,
   get_default : () => {
     let value = gtiz_legend.getColorScheme();

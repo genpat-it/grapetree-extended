@@ -1477,6 +1477,38 @@
   z-index: 9999;
 }
 
+.dashboard-grapetree .modal::before {
+  background-color: transparent;
+  backdrop-filter: blur(0.2rem);
+}
+
+.dashboard-grapetree.show-modal .modal::before {
+  opacity: 1;
+  z-index: 1000;
+  visibility: visible;
+}
+
+.dashboard-grapetree .modal::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--secondary-ultra-light);
+  opacity: 0;
+  z-index: -1;
+  visibility: hidden;
+  -webkit-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+}
+
+.dashboard-grapetree.show-modal .modal::after {
+  opacity: 0.8;
+  z-index: 1001;
+  visibility: visible;
+}
+
 .dashboard-grapetree .modal.modal-help .modal-contents {
   max-width: 55rem;
   max-height: 90vh;

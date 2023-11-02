@@ -462,6 +462,56 @@ gtiz_context.showMenu = function(type, trigger) {
   }
 }
 
+/**
+ * Update context menu position on window resize event
+ * 
+ * @param {DOM Node} menu Context menu to update
+ * @param {String} type Relative card of context menu
+ */
+gtiz_context.updateContextPosition = function(menu, type) {
+
+  let body_cls = gtiz_context.body.getAttribute('class');
+  let component = document.querySelector('.card-' + type);
+  let card_context = menu.querySelector('.card-context-menu');
+  let card_form = card_context.querySelector('.card-form');
+  let card_form_top = card_form.offsetTop;
+  let component_style = getComputedStyle(component);
+  let menu_h = menu.offsetHeight;
+  let card_context_h = card_context.offsetHeight;
+  let margin_r = parseInt(component_style.marginRight.replace(/\D/g, ""));
+  let width = component.offsetWidth;
+  let rect = component.getBoundingClientRect();
+  let x = rect.left;
+  let y = rect.top;
+  let left = x;
+  let top = y;
+  // update position
+  menu.style.left = (left + width + margin_r)/10 + 'rem';
+  menu.style.top  = (top)/10 + 'rem';
+  if (type == 'legend') {
+    let translate = -(width + margin_r)/10 + 'rem';
+    component.style.transform = `translateX(${translate})`;
+  }
+  if (!body_cls.includes('-l')) {
+    width = 320;
+  } else {
+    let legend_width = document.querySelector('.main > .legend').offsetWidth;
+    menu.style.width = legend_width/10 + 'rem';
+  }
+  if (card_context_h > menu_h) {
+    let height = menu_h - 
+      parseInt(getComputedStyle(card_context).paddingTop) -
+      parseInt(getComputedStyle(card_context).paddingBottom) -
+      parseInt(getComputedStyle(card_context).marginTop) -
+      parseInt(getComputedStyle(card_context).marginBottom);
+      card_context.style.height = height/10 + 'rem';
+      card_form.style.height = (card_context.offsetHeight - card_form_top)/10 + 'rem';
+  } else {
+    card_context.removeAttribute('style');
+    card_form.removeAttribute('style');
+  }
+}
+
 gtiz_context.triggers.forEach(function(trigger) {
   trigger.addEventListener('click', function(e) {
     let type = trigger.getAttribute('data-menu-type');
@@ -501,39 +551,23 @@ gtiz_context.map_div.addEventListener("contextmenu", (e) => {
 });
 
 window.addEventListener("resize", function() {
-  let menu = document.querySelector('.context-menu-legend');
+  let menu = document.querySelector('.context-menu');
   if (menu) {
-    let card = document.querySelector('.card-legend');
-    let card_context = document.querySelector('.card-context-menu');
-    let card_form = card_context.querySelector('.card-form');
-    let card_form_top = card_form.offsetTop;
-    let card_style = getComputedStyle(card);
-    let menu_h = menu.offsetHeight;
-    let card_context_h = card_context.offsetHeight;
-    let margin_r = parseInt(card_style.marginRight.replace(/\D/g, ""));
-    let width = card.offsetWidth;
-    let translateX_value = -(width + margin_r)/10 + 'rem';
-    card.style.transform = `translateX(${translateX_value})`;
-    setTimeout(() => {
-      let rect = card.getBoundingClientRect();
-      let x = rect.left;
-      let y = rect.top;
-      let left = x;
-      let top = y;
-      menu.style.left = (left + width + margin_r)/10 + 'rem';
-      menu.style.width = width/10 + 'rem';
-    }, 100);
-    if (card_context_h > menu_h) {
-      let height = menu_h - 
-        parseInt(getComputedStyle(card_context).paddingTop) -
-        parseInt(getComputedStyle(card_context).paddingBottom) -
-        parseInt(getComputedStyle(card_context).marginTop) -
-        parseInt(getComputedStyle(card_context).marginBottom);
-        card_context.style.height = height/10 + 'rem';
-        card_form.style.height = (card_context.offsetHeight - card_form_top)/10 + 'rem';
-    } else {
-      card_context.removeAttribute('style');
-      card_form.removeAttribute('style');
+    let cls = menu.getAttribute('class');
+    let type;
+    if (cls.includes('legend')) {
+      type = 'legend';
+    } else if (cls.includes('map')) {
+      type = 'map';
+    } else if (cls.includes('tree')) {
+      type = 'tree';
+    } else if (cls.includes('metadata')) {
+      type = 'metadata';
+    }
+    if (type) {
+      setTimeout(() => {
+        gtiz_context.updateContextPosition(menu, type);   
+      }, 100);
     }
   }
 });
