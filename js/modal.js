@@ -75,7 +75,7 @@ gtiz_modal.buildNotifier = function(title, contents, feedback, f_type) {
  * @param {String} title Modal title
  * @param {Array} contents Array of html modal contents
  * @param {DOM Node} feedback System feedback for users
- * @param {String} f_type Feedback type to assign as class `info` | to be defined
+ * @param {String} f_type Feedback type to assign as class `info` | `warning`
  */
 gtiz_modal.buildModal = function(title, contents, feedback, f_type) {
   let modal = document.querySelector('.modal');

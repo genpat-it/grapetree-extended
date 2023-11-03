@@ -1,5 +1,6 @@
 let gtiz_context = {};
 gtiz_context.cfg = [];
+gtiz_context.menus = ['tree', 'legend', 'metadata', 'map'];
 gtiz_context.body = document.querySelector('body');
 gtiz_context.triggers = document.querySelectorAll('.card-context-menu-trigger');
 gtiz_context.graph_div = document.querySelector('#graph-div');
@@ -7,7 +8,6 @@ gtiz_context.legend_div = document.querySelector('.card-legend');
 gtiz_context.metadata_div = document.querySelector('.card-metadata');
 gtiz_context.legend_div = document.querySelector('.card-legend');
 gtiz_context.map_div = document.querySelector('.map-container');
-
 gtiz_context.legendToggleSelectionMode = function (value) {
   gtiz_legend.toggleSelectionMode(value);
 }
@@ -250,10 +250,18 @@ gtiz_context.getMenu = function(type) {
 }
 
 gtiz_context.closeContextMenu = function(type) {
+  let gtiz_context_node = document.querySelector('.context-menu');
+  if (!type) {
+    let cls = gtiz_context_node.getAttribute('class');
+    gtiz_context.menus.forEach(menu => {
+      if (cls.includes(menu)) {
+        type = menu;
+      }
+    });
+  }
   let specific_cls = 'show-context-menu-' + type;
   gtiz_context.body.classList.remove('show-context-menu');
   gtiz_context.body.classList.remove(specific_cls);
-  let gtiz_context_node = document.querySelector('.context-menu');
   gtiz_context_node.remove();
   let card_selector = '.card-' + type;
   let card_type = document.querySelector(card_selector);
@@ -555,15 +563,11 @@ window.addEventListener("resize", function() {
   if (menu) {
     let cls = menu.getAttribute('class');
     let type;
-    if (cls.includes('legend')) {
-      type = 'legend';
-    } else if (cls.includes('map')) {
-      type = 'map';
-    } else if (cls.includes('tree')) {
-      type = 'tree';
-    } else if (cls.includes('metadata')) {
-      type = 'metadata';
-    }
+    gtiz_context.menus.forEach(menu => {
+      if (cls.includes(menu)) {
+        type = menu;
+      }
+    });
     if (type) {
       setTimeout(() => {
         gtiz_context.updateContextPosition(menu, type);   

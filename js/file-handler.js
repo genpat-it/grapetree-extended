@@ -815,7 +815,7 @@ gtiz_file_handler.modalLoadSelectedFiles = function() {
 		gtiz_settings.closeModal();
 		let gtiz_context_node = document.querySelector('.context-menu');
 		if (gtiz_context_node) {
-			gtiz_context_node.remove();
+			gtiz_context.closeContextMenu();
 		}
 	} else {
 		let feedback_node = document.querySelector('.modal-feedback');
@@ -831,7 +831,6 @@ gtiz_file_handler.modalLoadSelectedFiles = function() {
  * 
  */
 gtiz_file_handler.modalSetFilesToLoad = function(files) {
-	console.log(files);
 	gtiz_file_handler.files_to_load = files;
 };
 

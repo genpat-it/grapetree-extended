@@ -860,6 +860,32 @@ gtiz_tree.buildFileHandlerModalContents = function(mode) {
       label.setAttribute('id', 'm-upload-file-label');
       label.setAttribute('class', 'input-file input-file-drag');
       label.innerHTML = '<i class="iconic iconic-upload"></i> ' + gtiz_locales.current.m_upload_file_label;
+      label.addEventListener("drop", (ev) => {
+        // Prevent default behavior (Prevent file from being opened)
+        ev.stopPropagation();
+        ev.preventDefault();
+        let modal = document.querySelector('.modal');
+        let feedback = modal.querySelector('.modal-feedback');
+        feedback.innerHTML = '';
+        let files = ev.dataTransfer.files;
+        if (files.length === 1) {
+          let file_name = files[0].name;
+          label.innerHTML = '<i class="iconic iconic-file"></i> ' + file_name;
+          item.listener(files);
+        } else {
+          feedback.classList.add('info');
+          feedback.innerHTML = '<p><i class="iconic iconic-warning-triangle"></i> ' + gtiz_locales.current.dropped_files_alert + '</p>';
+          feedback.classList.add('show');
+        }
+      });
+      label.addEventListener("dragover", (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+      });
+      label.addEventListener("dragenter", (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+      });
       box.append(label);
       let input = document.createElement('input');
       input.setAttribute('type', 'file');
@@ -875,7 +901,7 @@ gtiz_tree.buildFileHandlerModalContents = function(mode) {
         input.addEventListener(event, (e) => {
           let path = e.target.value;
           let file_name = path.split("\\").pop();
-          file_name = file_name.slice(0, 21) + "...";
+          file_name = file_name.slice(0, 21);
           if (file_name) {
             label.innerHTML = '<i class="iconic iconic-file"></i> ' + file_name;
             item.listener(input.files);
@@ -913,7 +939,7 @@ gtiz_tree.openFileHandlerModal = function(mode) {
 			title = gtiz_locales.current.save_grapetree;
 			break;
 		case 'load':
-			title = gtiz_locales.current.save_grapetree;
+			title = gtiz_locales.current.load_grapetree;
 			break;
 		default:
 			title = undefined;
