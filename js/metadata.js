@@ -3,9 +3,27 @@ let gtiz_metadata = {};
 gtiz_metadata.show_nodes = 'show_all';
 gtiz_metadata.show_hypothetical = 'hide_hypo';
 gtiz_metadata.selected_column = '';
+gtiz_metadata.last_selected_node = null;
 
 gtiz_metadata.metadata_node = document.querySelector(".metadata");
 gtiz_metadata.grid_div = document.getElementById("metadata-grid");
+
+/**
+ * Avoid text selection when we perform a multiselection on checkboxes
+ * 
+ */
+gtiz_metadata.grid_div.addEventListener('selectstart', function(event) {
+  let target = event.target;
+  if (target && target.nodeType !== 3) {
+    let cls = target.getAttribute('class');
+    let child = target.querySelector('.ag-checkbox-input-wrapper');
+    if (cls.includes('ag-checkbox-input-wrapper')) {
+      event.preventDefault();
+    } else if (child) {
+      event.preventDefault();
+    }
+  }
+});
 
 /**
  * Options definition for ag-grid library
@@ -18,12 +36,55 @@ gtiz_metadata.options = {
     filter: true,
     resizable: true
   },
+  enableCellTextSelection : true,
+  ensureDomOrder : true,
   rowSelection: 'multiple',
+  suppressRowClickSelection: true,
   rowMultiSelectWithClick : true,
   animateRows: true, // have rows animate to new positions when sorted
   suppressColumnVirtualisation : true,
-  onRowClicked: (event) => {
-    gtiz_metadata.onRowClicked(event.node);
+  isRowSelectable: (params) => {
+    return !params.data.ID.includes('hypo');
+  },
+  onCellClicked: (event) => {
+    if (event.colDef.checkboxSelection) {
+      if (event.event.shiftKey) {
+        // gtiz_metadata.grid_div.setAttribute('onselectstart', 'return false;');
+        let node = event.node;
+        // If shift key is pressed, handle multiple selection logic
+        let isSelected = node.isSelected();
+        // Select all nodes between the last selected node and the current node
+        if (gtiz_metadata.last_selected_node) {
+          let lastSelectedIndex = gtiz_metadata.last_selected_node.rowIndex;
+          let currentIndex = node.rowIndex;
+          let [start, end] = [Math.min(lastSelectedIndex, currentIndex), Math.max(lastSelectedIndex, currentIndex)];
+          gtiz_metadata.options.api.forEachNode(node => {
+            if (node.rowIndex >= start && node.rowIndex <= end) {
+              node.setSelected(!isSelected);
+            }
+          });
+        }
+        // Update the last selected node
+        gtiz_metadata.last_selected_node = node;
+        // Select all nodes between the last selected node and the current node
+        gtiz_metadata.options.api.forEachNode(node => {
+          if (node === gtiz_metadata.last_selected_node || node === event.node) {
+            node.setSelected(!isSelected);
+          }
+        });
+        gtiz_metadata.onCheckBoxClicked(node);
+      } else {
+        let node = event.node;
+        // Update the last selected node
+        gtiz_metadata.last_selected_node = node;
+        if (node.selected) {
+          node.setSelected(false);
+        } else {
+          node.setSelected(true);
+        }
+        gtiz_metadata.onCheckBoxClicked(node);
+      }
+    }
   },
   isExternalFilterPresent: () => {
     let present = gtiz_metadata.isExternalFilterPresent();
@@ -178,11 +239,11 @@ gtiz_metadata.downloadCsv = function() {
  * @param {Object} node Grid row object
  *  
  */
-gtiz_metadata.onRowClicked = function(node) {
+gtiz_metadata.onCheckBoxClicked = function(node) {
   let codes = [];
   if (node.isSelected()) {
     gtiz_metadata.options.api.forEachNode(element => {
-      if (element.isSelected()) {
+      if (element.isSelected() && !element.data.ID.includes('hypo')) {
         codes.push(element.data.ID);
       }
     });
@@ -196,6 +257,39 @@ gtiz_metadata.onRowClicked = function(node) {
     });
     gtiz_tree.tree.unselectNodesByIds(codes);
   }
+}
+
+/**
+ * Select all event, we select directly on tree ad by reflection `tree.interceptor` set rows selection with `gtiz_metadata.findNodes`.
+ * 
+ */
+gtiz_metadata.selectAllFilteredOnly = function() {
+  gtiz_metadata.options.api.selectAllFiltered();
+  let codes = [];
+  gtiz_metadata.options.api.forEachNode(element => {
+    if (element.isSelected()) {
+      codes.push(element.data.ID);
+    }
+  });
+  gtiz_tree.tree.clearSelection();
+  gtiz_tree.tree.selectNodesByIds(codes);
+}
+
+/**
+ * Select all event, we select directly on tree ad by reflection `tree.interceptor` set rows selection with `gtiz_metadata.findNodes`.
+ * 
+ */
+gtiz_metadata.deselectAllFilteredOnly = function() {
+  let codes = [];
+  gtiz_metadata.options.api.forEachNodeAfterFilter(node => {
+    node.setSelected(false);
+  });
+  gtiz_metadata.options.api.forEachNode(element => {
+    if (!element.isSelected() && !element.data.ID.includes('hypo')) {
+      codes.push(element.data.ID);
+    }
+  });
+  gtiz_tree.tree.unselectNodesByIds(codes);
 }
 
 /**
@@ -267,11 +361,34 @@ gtiz_metadata.setGrid = function() {
   let fields = Object.keys(gtiz_tree.tree.metadata_info);
   let meta = gtiz_tree.tree.metadata;
   let columns = [];
-  columns.push();
+  let check = {
+    headerClass: 'check-header-cell',
+    headerCheckboxSelection: true,
+    headerCheckboxSelectionFilteredOnly: true,
+    checkboxSelection: true,
+    maxWidth: 50,
+    filter: false,
+    sortable: false,
+    resizable: true,
+    suppressAutoSize: true,
+    lockPosition: true,
+    showDisabledCheckboxes: true,
+  }
+  columns.push(check);
   Object.keys(fields).forEach((key, index) => {
     if (fields[key] != 'nothing') {
-      let obj = {
-        field : fields[key]
+      let check = fields[key] == 'ID' ? true : false;
+      let obj = {};
+      if (check) {
+        obj = {
+          field : fields[key],
+          // checkboxSelection: check,
+        }
+      } else {
+        obj = {
+          field : fields[key],
+          // checkboxSelection: check,
+        }
       }
       columns.push(obj);
     }
@@ -306,6 +423,16 @@ gtiz_metadata.init = function() {
   new agGrid.Grid(gtiz_metadata.grid_div, gtiz_metadata.options);
   gtiz_metadata.setGrid();
   gtiz_metadata.buildUi();
+
+  let check_header_node = document.querySelector('.check-header-cell');
+  check_header_node.addEventListener('click', function(e) {
+    let check_node = check_header_node.querySelector('.ag-checkbox-input-wrapper');
+    if (check_node.classList.contains('ag-indeterminate') || check_node.classList.contains('ag-checked')) {
+      gtiz_metadata.deselectAllFilteredOnly();
+    } else {
+      gtiz_metadata.selectAllFilteredOnly();
+    }
+  });
 }
 
 /**
