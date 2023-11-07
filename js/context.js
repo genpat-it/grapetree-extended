@@ -425,7 +425,6 @@ gtiz_context.showMenu = function(type, trigger) {
         // card.style.width = (card.offsetWidth - width)/10 + 'rem';
         tree_container.style.width = (card.offsetWidth + (2 * margin) - width)/10 + 'rem';
       }
-      gtiz_layout.resizeTree();
     }
     if (type == 'metadata') {
       let metadata_container = document.querySelector('.metadata');
