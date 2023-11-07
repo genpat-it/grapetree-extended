@@ -871,7 +871,6 @@ gtiz_legend.getSelectionMap = function() {
 }
 
 gtiz_legend.init = function() {
-  gtiz_legend.toggleSelectionMode(gtiz_legend.selection_mode);
   gtiz_legend.toggleViewMode(gtiz_legend.view_mode);
   let order = gtiz_legend.group_order.type + '-' + gtiz_legend.group_order.sort;
   gtiz_legend.changeGroupOrder(order);
