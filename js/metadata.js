@@ -230,7 +230,12 @@ gtiz_metadata.getColorByOptions = function() {
  * 
  */
 gtiz_metadata.downloadCsv = function() {
-  gtiz_metadata.options.api.exportDataAsCsv();
+  let columns = gtiz_metadata.options.columnApi.getColumns();
+  // we are removing first column dedicated to checkbox
+  columns.shift();
+  gtiz_metadata.options.api.exportDataAsCsv({
+    columnKeys: columns
+  });
 }
 
 /**
