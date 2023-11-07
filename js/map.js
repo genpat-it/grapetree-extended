@@ -542,7 +542,7 @@ gtiz_map.defineMarkers = () => {
   let metadata = tree.metadata;
   let colors = tree.category_colours;
   let category = tree.display_category;
-  let all_nodes = tree.getAllNodesIDs();
+  let all_nodes = tree.node_map ? Object.keys(tree.node_map) : tree.getAllNodesIDs();
   let nodes;
   if (filtered_nodes && filtered_nodes.length > 0) {
     nodes = filtered_nodes;
@@ -720,7 +720,14 @@ gtiz_map.reBuildGeoJSON = () => {
   let data = JSON.parse(gtiz_map.geojson);
   let type = gtiz_map.delta_type;
   let delta = gtiz_map.delta;
-
+  let nodes_in_map = gtiz_tree.tree.node_map ? Object.keys(gtiz_tree.tree.node_map) : undefined;
+  if (nodes_in_map) {
+    if (Object.keys(data.features).length > nodes_in_map.length) {
+      data.features = data.features.filter(feature => {
+        return nodes_in_map.includes(feature.properties.codice);
+      });
+    }
+  }
   /**
    * 
    * We need to rebuild the GeoJSON provided as an url parameter to merge samples codes with same coordinates, first of all this will avoid the marker overlap but also get the basis to make (and color) pie chart when multiple samples are present in the same point.
