@@ -1034,24 +1034,37 @@ gtiz_map.findNodesInMap = (selected_groups) => {
  * 
  */
 gtiz_map.updateNodesInMap = () => {
-  let grouped_nodes_obj = {};
-  let selected_nodes = gtiz_tree.tree.getSelectedNodeIDs();
-  let selected_ids = [];
-  for (selected_node of selected_nodes) {
-    grouped_nodes_obj[selected_node] = gtiz_tree.tree.grouped_nodes[selected_node];
-  }
-  for (let [key, value] of Object.entries(grouped_nodes_obj)) {
-    // console.log(key, value);
-    selected_ids.push(...value);
-  }
 
-  this.pointLayer.eachLayer((layer) => {
-    layer._icon.classList.remove('selected');
-    layer._icon.classList.remove('fully-selected');
-    layer._icon.classList.remove('partially-selected');
-  });
+  let selection_mode = gtiz_legend.selection_mode;
+  if (selection_mode == 'visual') {
+    let colors = [];
+    let items = document.querySelectorAll('.card-legend .list-row');
+    items.forEach(item => {
+      if (item.classList.contains('selected')) {
+        let color = item.getAttribute('data-group-colour-izsam');
+        colors.push(color);
+      }
+    });
+    gtiz_map.alterMarkers(colors);
+  } else {
+    let grouped_nodes_obj = {};
+    let selected_nodes = gtiz_tree.tree.getSelectedNodeIDs();
+    let selected_ids = [];
+    for (let selected_node of selected_nodes) {
+      grouped_nodes_obj[selected_node] = gtiz_tree.tree.grouped_nodes[selected_node];
+    }
+    for (let [key, value] of Object.entries(grouped_nodes_obj)) {
+      // console.log(key, value);
+      selected_ids.push(...value);
+    }
 
-  if (selected_ids.length > 0) {
+    this.pointLayer.eachLayer((layer) => {
+      layer._icon.classList.remove('selected');
+      layer._icon.classList.remove('fully-selected');
+      layer._icon.classList.remove('partially-selected');
+    });
+
+    if (selected_ids.length > 0) {
       this.pointLayer.eachLayer((layer) => {
         let feat_samples = layer.feature.properties.samples;
         let feat_samples_codes = [];
@@ -1084,6 +1097,7 @@ gtiz_map.updateNodesInMap = () => {
         layer._icon.classList.remove('partially-selected');
       });
     }
+  }
 } // updateNodesInMap
 
 /**

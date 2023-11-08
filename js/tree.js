@@ -487,10 +487,6 @@ gtiz_tree.treeLoaded = function(tree) {
         gtiz_tree.original_tree.initial_category = data;
       }
       if (gtiz_tree.change_counter >= 1) {
-        let lines = document.querySelectorAll('#vis line');
-        lines.forEach(line => {
-          line.setAttribute('style', 'stroke: black; opacity: 1;');
-        });
         let video_status = gtiz_video.status;
         if (video_status && gtiz_video.status != 'init') {
           gtiz_video.reset();
