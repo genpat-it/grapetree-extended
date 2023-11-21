@@ -557,7 +557,6 @@ gtiz_legend.changeColorScheme = function(value) {
  */
 gtiz_legend.toggleViewMode = function(value) {
   let legend = document.querySelector('.card-legend');
-  // let selection = toggle.getAttribute('data-selection');
   gtiz_legend.view_mode = value;
   if (gtiz_legend.view_mode == 'list') {
     legend.classList.remove('card-legend-histogram');
@@ -750,6 +749,16 @@ gtiz_legend.invertSelection = function () {
 }
 
 /**
+ * Set UI for selection mode toggle on init
+ * @param {String} value `qualitative` || `visual`
+ * 
+ */
+gtiz_legend.setVisualSelectionToggle = function (value) {
+  let menu = gtiz_legend.context_menu.find(el => el.id == 'legend-menu-selection-mode');
+  menu.selected = gtiz_legend.selection_mode;
+}
+
+/**
  * Reset selection when in `visual` selection mode
  * 
  */
@@ -872,6 +881,7 @@ gtiz_legend.getSelectionMap = function() {
 
 gtiz_legend.init = function() {
   gtiz_legend.toggleViewMode(gtiz_legend.view_mode);
+  gtiz_legend.setVisualSelectionToggle(gtiz_legend.selection_mode);
   let order = gtiz_legend.group_order.type + '-' + gtiz_legend.group_order.sort;
   gtiz_legend.changeGroupOrder(order);
   gtiz_legend.setSelection();

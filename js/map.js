@@ -1270,6 +1270,7 @@ gtiz_map.init = function() {
                 padding: [21, 21]
               });
             }
+            gtiz_tree.updateOriginalTree('map');
           }
         }).catch((err) => {
           console.log(err);
@@ -1314,7 +1315,7 @@ gtiz_map.init = function() {
               padding: [21, 21]
             });
           }
-  
+          gtiz_tree.updateOriginalTree('map');
         } else {
           let map_node = document.querySelector('#map-div');
           map_node.classList.add('map-not-initialized');
@@ -1349,6 +1350,7 @@ gtiz_map.init = function() {
           padding: [21, 21]
         });
       }
+      gtiz_tree.updateOriginalTree('map');
     }
   }, 500);
 

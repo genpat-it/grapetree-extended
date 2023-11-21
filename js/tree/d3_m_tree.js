@@ -1540,8 +1540,8 @@ D3MSTree.prototype.setLogLinkScale=function(log){
         for (var ii in this.force_links){
                 this._correctLinkLengths(this.force_links[ii]);		
         }
-        //this._updateGraph(true);  
-		this.refreshGraph();
+        this._updateGraph(true);  
+	//this.refreshGraph();
 }
 
 
