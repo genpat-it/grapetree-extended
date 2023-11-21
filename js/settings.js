@@ -1066,6 +1066,5 @@ document.addEventListener('touchend', e => {
 });
 
 gtiz_settings.init = function() {
-  // gtiz_settings.setMapCard();
   gtiz_settings.setView(gtiz_settings.cfg);
 };

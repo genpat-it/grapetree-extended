@@ -781,27 +781,32 @@ D3MSTree.prototype.setLayout = function(layout_data){
         }        
         if (layout_data['nodes_links']){
                 var data = layout_data['nodes_links'];
-                this.max_link_scale=data.max_link_scale?data.max_link_scale:500
-                this.size_power=data['size_power']?data['size_power']:0.5;
-                this.base_node_size=data.base_node_size;
+                this.max_link_scale = data.max_link_scale?data.max_link_scale:500
+                this.size_power = data['size_power']?data['size_power']:0.5;
+                this.base_node_size = data.base_node_size;
                 this.max_link_length = data.max_link_length?data.max_link_length:10000;
                 this.log_link_scale = data['log_link_scale'];
                 this.link_font_size = data['link_font_size']?data['link_font_size']:this.link_font_size
-                this.distance_scale= d3.scale.linear().domain([0,this.max_link_distance]).range([0,this.max_link_scale]);
+                this.distance_scale = d3.scale.linear().domain([0,this.max_link_distance]).range([0,this.max_link_scale]);
                 this.show_link_labels =  data['show_link_labels'];
 		        this.node_text_value=data['node_text_value'];
                 this.node_font_size = data['node_font_size']?data['node_font_size']:this.node_font_size
-                this.show_individual_segments=data['show_individual_segments'];
-                this.show_node_labels= data['show_node_labels'] ? data['show_node_labels'] : false;
-                this.hide_link_length= data["hide_link_length"]?data["hide_link_length"]:this.hide_link_length
+                this.show_individual_segments = data['show_individual_segments'];
+                this.show_node_labels = data['show_node_labels'] ? data['show_node_labels'] : false;
+                this.hide_link_length = data["hide_link_length"]?data["hide_link_length"]:this.hide_link_length;
                 this.custom_colours = data['custom_colours']?data['custom_colours']:this.custom_colours;
                 this.color_schemes.custom = data.custom_color_scheme ? data.custom_color_scheme : this.color_schemes.custom;
                 this.backup = data.backup ? data.backup : null;
                 this._updateNodeRadii();
                 this._setLinkDistance();
                 this.setLinkLength(this.max_link_scale);                                  
-        }
-        else{              
+        } else {
+                // default configuration parameters from gtiz_tree object
+                if (gtiz_tree) {
+                        console.log(gtiz_tree);
+                        this.link_font_size = gtiz_tree.branch_label_font_size ? gtiz_tree.branch_label_font_size : this.link_font_size;
+                        this.show_link_labels =  gtiz_tree.show_branch_labels == 'hidden' ? false : true;
+                }
                 this.setLinkLength(this.max_link_scale);
                 this.setNodeSize(this.base_node_size);
         }

@@ -37,6 +37,20 @@ gtiz_map.hexToRgb = function (hex) {
   } : null;
 }
 
+/**
+ * Open map component by simulating click on map layout toggle button
+ * 
+ */
+gtiz_map.openMapComponent = function () {
+  let map_trigger = document.querySelector('[data-view="map"]');
+  if (map_trigger) {
+    let selection = map_trigger.getAttribute('data-selection');
+    if (selection == 'off') {
+      map_trigger.click();
+    }
+  }
+}
+
 gtiz_map.toggleMarkerType = function(value) {
   if (value) {
     gtiz_map.markers_type = value;
@@ -1009,7 +1023,6 @@ gtiz_map.findNodesInMap = (selected_groups) => {
     }
 
     if (selected_groups == 'unselect_all') {
-      console.log('All selected from context menu');
       this.pointLayer.eachLayer((layer) => {
         layer._icon.classList.remove('selected');
         layer._icon.classList.remove('fully-selected');
@@ -1018,7 +1031,6 @@ gtiz_map.findNodesInMap = (selected_groups) => {
     }
 
     if (selected_groups == 'select_all') {
-      console.log('All selected from context menu');
       this.pointLayer.eachLayer((layer) => {
         layer._icon.classList.remove('selected');
         layer._icon.classList.remove('fully-selected');
@@ -1225,16 +1237,8 @@ gtiz_map.init = function() {
     if (!gtiz_map.geojson || gtiz_map.geojson == '') {
       // here we give priority to geo file loaded as url instead of coordinates loaded in metadata
       if ('geo' in gtiz_file_handler.params) {
-        if (!gtiz_map.initialized) {
-          // open map component simulating map toggle click
-          let map_trigger = document.querySelector('[data-view="map"]');
-          if (map_trigger) {
-            let selection = map_trigger.getAttribute('data-selection');
-            if (selection == 'off') {
-              map_trigger.click();
-            }
-          }
-        }
+        // uncomment following code to open map component automatically
+        // if (!gtiz_map.initialized) { gtiz_map.openMapComponent(); }
         let geo = gtiz_file_handler.params.geo;
         gtiz_file_handler.getData(geo).then((obj) => {
           if (obj.error) {
@@ -1289,14 +1293,8 @@ gtiz_map.init = function() {
           let geoJ = gtiz_map.geojson_from_metadata;
           gtiz_map.setGeoJSON(geoJ);
           if (!gtiz_map.initialized) {
-            // open map component simulating map toggle click
-            let map_trigger = document.querySelector('[data-view="map"]');
-            if (map_trigger) {
-              let selection = map_trigger.getAttribute('data-selection');
-              if (selection == 'off') {
-                map_trigger.click();
-              }
-            }
+            // uncomment following code to open map component automatically
+            // gtiz_map.openMapComponent();
             gtiz_map.initMap();
           }
           gtiz_map.definePoints();
@@ -1324,14 +1322,8 @@ gtiz_map.init = function() {
       }
     } else {
       if (!gtiz_map.initialized) {
-        // open map component simulating map toggle click
-        let map_trigger = document.querySelector('[data-view="map"]');
-        if (map_trigger) {
-          let selection = map_trigger.getAttribute('data-selection');
-          if (selection == 'off') {
-            map_trigger.click();
-          }
-        }
+        // uncomment following code to open map component automatically
+        // gtiz_map.openMapComponent();
         gtiz_map.initMap();
       }
       gtiz_map.definePoints();

@@ -380,6 +380,9 @@ gtiz_layout.setView = function(obj) {
   if (gtiz_layout.legend == 'on') {
     gtiz_layout.setLegendHeight();
   }
+  if (gtiz_layout.settings == 'on') {
+    gtiz_settings.init();
+  }
   if (gtiz_layout.map == 'on' && gtiz_map.initialized) {
     gtiz_map.init();
     gtiz_layout.resizeMap();
