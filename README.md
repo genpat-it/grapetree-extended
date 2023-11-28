@@ -84,7 +84,7 @@ Dashboard allows you to download a complete JSON file including metadata and con
 
 ## Available Languages and translations
 
-Currently, the available languages are English and Italian. However, the application can be easily extended with new translations. If you would like to contribute, you can use the `en.js` or `it.js` file as a template from the `i18n` folder in this repository and translate the values. For any information or support regarding this, do not hesitate to contact bionformatica@izs.it.
+Currently, the available languages are English and Italian. However, the application can be easily extended with new translations. If you would like to contribute, you can use the `en.js` or `it.js` file as a template from the `i18n` folder in this repository and translate the values. For any information or support regarding this, do not hesitate to contact bioinformatica@izs.it.
 
 ## Documentation
 
