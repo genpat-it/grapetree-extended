@@ -2343,8 +2343,6 @@ aside code,
 .notifier-feedback p {
   font-size: 1.1rem;
   margin-bottom: 0;
-  padding-left: 0.3rem;
-  padding-right: 0.3rem;
   color: var(--accent);
 }
 
@@ -2354,6 +2352,10 @@ aside code,
 
 .notifier-feedback.info p {
   color: var(--secondary-dark);
+}
+
+.notifier-feedback p .notifier-response-url {
+  word-break: break-all;
 }
 
 /* MODAL */

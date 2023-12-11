@@ -1243,9 +1243,23 @@ gtiz_map.init = function() {
         gtiz_file_handler.getData(geo).then((obj) => {
           if (obj.error) {
             let title = '<i class="iconic iconic-warning-triangle"></i> ' + gtiz_locales.current.oops;
+            let html = gtiz_locales.current.missing_net_geo_alert;
+            if (obj.status) {
+              if (obj.status == 403) {
+                title = '<i class="iconic iconic-warning-triangle"></i> ' + gtiz_locales.current.oops_forbidden_http;
+                let protocol = window.location.protocol;
+                let hostname = window.location.host;
+                let url = protocol + '//' + hostname;
+                html = gtiz_locales.current.forbidden_net_geojson_alert.replace('{0}', url).replace('{1}', url);
+              }
+              if (obj.status == 404) {
+                title = '<i class="iconic iconic-warning-triangle"></i> ' + gtiz_locales.current.oops_not_found_http;
+                html = gtiz_locales.current.not_found_net_geojson_alert;
+              }
+            }
             let contents = [];
             let content = document.createElement('p');
-            content.innerHTML = gtiz_locales.current.missing_net_geo_alert;
+            content.innerHTML = html;
             contents.push(content);
             let feedback = '<p>' + obj.text + '</p>';
             let f_type = 'info';

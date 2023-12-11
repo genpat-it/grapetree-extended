@@ -235,15 +235,17 @@ gtiz_file_handler.getData = async function (url) {
       const text = await response.text(); // Await here to get the text content
       let obj = {
         text: text, // Include the text content in the object
-        error: false
+        error: false,
+				status: response.status
       };
       return obj;
     } else {
-			let text = gtiz_locales.current.fetch_error + " Status: " + response.status + ". Url: " + url;
+			let text = gtiz_locales.current.fetch_error + " Status: " + response.status + ". Url: " + "<span class=\"notifier-response-url\">" + url + "</span>";
 			console.log(text);
       let obj = {
         text: text,
-        error: true
+        error: true,
+				status: response.status
       };
       return obj;
     }
@@ -472,9 +474,23 @@ gtiz_file_handler.loadNetFiles = function() {
 			if (obj.error) {
 				gtiz_file_handler.initTreeDropArea();
 				let title = '<i class="iconic iconic-warning-triangle"></i> ' + gtiz_locales.current.oops;
+				let html = gtiz_locales.current.missing_net_tree_alert;
+				if (obj.status) {
+					if (obj.status == 403) {
+						title = '<i class="iconic iconic-warning-triangle"></i> ' + gtiz_locales.current.oops_forbidden_http;
+						let protocol = window.location.protocol;
+						let hostname = window.location.host;
+						let url = protocol + '//' + hostname;
+						html = gtiz_locales.current.forbidden_net_tree_alert.replace('{0}', url).replace('{1}', url);
+					}
+					if (obj.status == 404) {
+						title = '<i class="iconic iconic-warning-triangle"></i> ' + gtiz_locales.current.oops_not_found_http;
+						html = gtiz_locales.current.not_found_net_tree_alert;
+					}
+				}
 				let contents = [];
 				let content = document.createElement('p');
-				content.innerHTML = gtiz_locales.current.missing_net_tree_alert;
+				content.innerHTML = html;
 				contents.push(content);
 				let feedback = '<p>' + obj.text + '</p>';
 				let f_type = 'info';
@@ -503,9 +519,23 @@ gtiz_file_handler.loadNetFiles = function() {
 						gtiz_file_handler.getData(metadata).then((obj) => {
 							if (obj.error) {
 								let title = '<i class="iconic iconic-warning-triangle"></i> ' + gtiz_locales.current.oops;
+								let html = gtiz_locales.current.missing_net_tsv_alert;
+								if (obj.status) {
+									if (obj.status == 403) {
+										title = '<i class="iconic iconic-warning-triangle"></i> ' + gtiz_locales.current.oops_forbidden_http;
+										let protocol = window.location.protocol;
+										let hostname = window.location.host;
+										let url = protocol + '//' + hostname;
+										html = gtiz_locales.current.forbidden_net_metadata_alert.replace('{0}', url).replace('{1}', url);
+									}
+									if (obj.status == 404) {
+										title = '<i class="iconic iconic-warning-triangle"></i> ' + gtiz_locales.current.oops_not_found_http;
+										html = gtiz_locales.current.not_found_net_metadata_alert;
+									}
+								}
 								let contents = [];
 								let content = document.createElement('p');
-								content.innerHTML = gtiz_locales.current.missing_net_tsv_alert;
+								content.innerHTML = html;
 								contents.push(content);
 								let feedback = '<p>' + obj.text + '</p>';
 								let f_type = 'info';
